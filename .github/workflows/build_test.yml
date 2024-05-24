@@ -10,7 +10,7 @@ on:
     branches: [ develop ]
 
 jobs:
-  build test:
+  build:
 
     runs-on: macos-latest
 
