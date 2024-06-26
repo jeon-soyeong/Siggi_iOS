@@ -1,5 +1,5 @@
 //
-//  TestCommon.swift
+//  CommonTest.swift
 //  Common
 //
 //  Created by 전소영 on 2024/06/26.
