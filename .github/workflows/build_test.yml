@@ -21,11 +21,11 @@ jobs:
           echo "$HOME/.local/share/mise/shims" >> $GITHUB_PATH
       - name: Install Tuist
         run: |
-          mise install tuist@3.42.2
-          mise use tuist@3.42.2
+            mise install tuist
+            mise use -g tuist@latest
     
       - name: Fetch Dependencies
-        run: tuist fetch
+        run: tuist install
 
       - name: Generate Project
         run: tuist generate
