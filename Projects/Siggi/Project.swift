@@ -1,6 +1,9 @@
 import ProjectDescription
 import ProjectDescriptionHelpers
 
-let project = Project.app(name: "Siggi",
-                          destinations: .iOS,
-                          dependencies: [.project(target: "Common", path: .relativeToRoot("Projects/Common"))])
+let project = Project.featureApp(name: "Siggi",
+                                 product: .app,
+                                 dependencies: [
+                                        .project(target: "Common", path: "../Common"),
+//                                        .external(name: "Alamofire")
+                                 ])

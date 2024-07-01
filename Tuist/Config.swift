@@ -1,7 +1,5 @@
 import ProjectDescription
 
 let config = Config(
-    plugins: [
-        .local(path: .relativeToManifest("../../Plugins/SiggiIOS")),
-    ]
+    generationOptions: .options(enforceExplicitDependencies: true)
 )
