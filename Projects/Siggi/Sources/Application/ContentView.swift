@@ -17,6 +17,7 @@ struct ContentView: View {
             SplashView()
         case .search:
             SearchView()
+        case .home:
         }
     }
 }

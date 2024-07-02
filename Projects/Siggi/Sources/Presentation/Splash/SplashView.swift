@@ -18,7 +18,7 @@ struct SplashView: View {
             .onAppear() {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
                     withAnimation(.easeOut) {
-                        appRootManager.currentRoot = .search
+                        appRootManager.currentRoot = .home
                     }
                 }
             }
