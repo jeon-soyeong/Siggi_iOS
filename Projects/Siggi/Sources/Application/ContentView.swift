@@ -17,27 +17,47 @@ struct ContentView: View {
         case .splash:
             SplashView()
         case .home:
-            TabView(selection: $selectedTab) {
-                NavigationStack {
-                    SearchView()
+            VStack {
+                switch selectedTab {
+                case .search:
+                    NavigationStack {
+                        SearchView()
+                    }
+                case .record:
+                    NavigationStack {
+                        RecordView()
+                    }
                 }
-                .tabItem {
-                    Label("검색", systemImage: "magnifyingglass")
-                }
-                .tag(Tab.search)
                 
-                NavigationStack {
-                    RecordView()
+                ZStack {
+                    RoundedRectangle(cornerRadius: 20)
+                        .fill(Color.white)
+                        .shadow(color: .black.opacity(0.2), radius: 20, x: 0, y: 5)
+                        .frame(height: 90)
+                    
+                    TabView(selection: $selectedTab) {
+                        Text("")
+                            .tabItem {
+                                Label("검색", systemImage: "magnifyingglass")
+                            }
+                            .tag(Tab.search)
+                        
+                        Text("")
+                            .tabItem {
+                                Label("기록", systemImage: "pencil.tip")
+                            }
+                            .tag(Tab.record)
+                    }
+                    .background(Color.clear)
+                    .clipShape(RoundedRectangle(cornerRadius: 20))
+                    .accentColor(.red)
+                    .onAppear {
+                        UITabBar.appearance().unselectedItemTintColor = .darkGray
+                    }
                 }
-                .tabItem {
-                    Label("기록", systemImage: "pencil.tip")
-                }
-                .tag(Tab.record)
+                .frame(height: 90)
             }
-            .accentColor(.red)
-            .onAppear(perform: {
-                UITabBar.appearance().unselectedItemTintColor = .darkGray
-            })
+            .edgesIgnoringSafeArea(.bottom)
         }
     }
 }
