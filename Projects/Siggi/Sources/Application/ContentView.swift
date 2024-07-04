@@ -9,11 +9,11 @@
 import SwiftUI
 
 struct ContentView: View {
-    @Environment(AppRootManager.self) private var appRootManger
+    @Environment(AppRootManager.self) private var appRootManager
     @State private var selectedTab: Tab = .search
     
     var body: some View {
-        switch appRootManger.currentRoot {
+        switch appRootManager.currentRoot {
         case .splash:
             SplashView()
         case .home:
@@ -49,13 +49,13 @@ struct ContentView: View {
                             .tag(Tab.record)
                     }
                     .background(Color.clear)
+                    .frame(height: 90)
                     .clipShape(RoundedRectangle(cornerRadius: 20))
                     .accentColor(.red)
                     .onAppear {
                         UITabBar.appearance().unselectedItemTintColor = .darkGray
                     }
                 }
-                .frame(height: 90)
             }
             .edgesIgnoringSafeArea(.bottom)
         }
