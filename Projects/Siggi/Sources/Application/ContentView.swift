@@ -17,7 +17,7 @@ struct ContentView: View {
         case .splash:
             SplashView()
         case .home:
-            VStack {
+            ZStack(alignment: .bottom) {
                 switch selectedTab {
                 case .search:
                     NavigationStack {
