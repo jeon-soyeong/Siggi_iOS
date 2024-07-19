@@ -33,7 +33,7 @@ struct ContentView: View {
                     RoundedRectangle(cornerRadius: 20)
                         .fill(Color.white)
                         .shadow(color: .black.opacity(0.2), radius: 20, x: 0, y: 5)
-                        .frame(height: 90)
+                        .frame(height: 85)
                     
                     TabView(selection: $selectedTab) {
                         Text("")
@@ -49,7 +49,7 @@ struct ContentView: View {
                             .tag(Tab.record)
                     }
                     .background(Color.clear)
-                    .frame(height: 90)
+                    .frame(height: 85)
                     .clipShape(RoundedRectangle(cornerRadius: 20))
                     .accentColor(.red)
                     .onAppear {
