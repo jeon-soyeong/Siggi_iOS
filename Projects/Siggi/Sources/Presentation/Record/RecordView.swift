@@ -8,8 +8,12 @@
 import SwiftUI
 
 struct RecordView: View {
+    @State private var path = NavigationPath()
+    
     var body: some View {
-        Text("RecordView!")
+        NavigationStack(path: $path) {
+            Text("RecordView!")
+        }
     }
 }
 
