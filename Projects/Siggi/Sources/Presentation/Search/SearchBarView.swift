@@ -20,6 +20,9 @@ struct SearchBarView: View {
                 Spacer()
                 TextField("식도락 장소 검색 🍽️", text: $searchText)
                     .fontWeight(.medium)
+                    .onSubmit {
+                        path.append(searchText)
+                    }
                 Button(action: {
                     if !searchText.isEmpty {
                         path.append(searchText)
