@@ -20,13 +20,9 @@ struct ContentView: View {
             ZStack(alignment: .bottom) {
                 switch selectedTab {
                 case .search:
-                    NavigationStack {
-                        SearchView()
-                    }
+                    SearchView()
                 case .record:
-                    NavigationStack {
-                        RecordView()
-                    }
+                    RecordView()
                 }
                 
                 ZStack {
