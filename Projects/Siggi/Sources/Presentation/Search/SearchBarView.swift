@@ -8,7 +8,8 @@
 import SwiftUI
 
 struct SearchBarView: View {
-    @State var searchText: String = ""
+    @State private var searchText: String = ""
+    @Binding var path: NavigationPath
     
     var body: some View {
         ZStack {
@@ -20,8 +21,10 @@ struct SearchBarView: View {
                 TextField("식도락 장소 검색 🍽️", text: $searchText)
                     .fontWeight(.medium)
                 Button(action: {
+                    if !searchText.isEmpty {
+                        path.append(searchText)
+                    }
                     // api query = searchText
-                    // 결과 리스트 searchDetailView 로 넘기기
                 }, label: {
                     Image(systemName: "magnifyingglass")
                         .resizable()
@@ -32,8 +35,4 @@ struct SearchBarView: View {
             .padding(10)
         }
     }
-}
-
-#Preview {
-    SearchBarView()
 }
