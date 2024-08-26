@@ -7,9 +7,12 @@
 //
 
 import SwiftUI
+import Common
 
 struct ContentView: View {
     @Environment(AppRootManager.self) private var appRootManager
+    @Environment(Router.self) var searchRouter
+    @Environment(Router.self) var recordRouter
     @State private var selectedTab: Tab = .search
     
     var body: some View {
@@ -20,9 +23,9 @@ struct ContentView: View {
             ZStack(alignment: .bottom) {
                 switch selectedTab {
                 case .search:
-                    SearchView()
+                    SearchView(searchRouter: searchRouter)
                 case .record:
-                    RecordView()
+                    RecordView(recordRouter: recordRouter)
                 }
                 
                 ZStack {

@@ -7,12 +7,17 @@
 //
 
 import SwiftUI
+import Common
 
 struct DIContainerModifier: ViewModifier {
     @State private var appRootManager = AppRootManager()
+    @Bindable var searchRouter = Router()
+    @Bindable var recordRouter = Router()
     
     func body(content: Content) -> some View {
         content
             .environment(appRootManager)
+            .environment(searchRouter)
+            .environment(recordRouter)
     }
 }
