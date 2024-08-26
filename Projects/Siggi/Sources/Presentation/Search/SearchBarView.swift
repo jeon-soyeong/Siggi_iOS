@@ -6,10 +6,11 @@
 //
 
 import SwiftUI
+import Common
 
 struct SearchBarView: View {
+    @Environment(Router.self) private var searchRouter
     @State private var searchText: String = ""
-    @Binding var path: NavigationPath
     
     var body: some View {
         ZStack {
@@ -21,11 +22,11 @@ struct SearchBarView: View {
                 TextField("식도락 장소 검색 🍽️", text: $searchText)
                     .fontWeight(.medium)
                     .onSubmit {
-                        path.append(searchText)
+                        searchRouter.pushView(screen: SearchScreen.seachDetail(searchText: searchText))
                     }
                 Button(action: {
                     if !searchText.isEmpty {
-                        path.append(searchText)
+                        searchRouter.pushView(screen: SearchScreen.seachDetail(searchText: searchText))
                     }
                     // api query = searchText
                 }, label: {

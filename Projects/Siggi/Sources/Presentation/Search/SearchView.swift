@@ -8,16 +8,17 @@
 
 import SwiftUI
 import MapKit
+import Common
 
 struct SearchView: View {
     @Namespace var mapScope
     @State private var locationManager = LocationManager()
     @State private var position: MapCameraPosition = .automatic
     @State private var isPositionUpdated = false
-    @State private var path = NavigationPath()
+    @Bindable var searchRouter: Router
     
     var body: some View {
-        NavigationStack(path: $path) {
+        NavigationStack(path: $searchRouter.route) {
             ZStack(alignment: .top) {
                 Map(position: $position, scope: mapScope) {
                     UserAnnotation()
@@ -40,7 +41,7 @@ struct SearchView: View {
                 }
                 
                 VStack(alignment: .trailing) {
-                    SearchBarView(path: $path)
+                    SearchBarView()
                     
                     VStack {
                         MapUserLocationButton(scope: mapScope)
@@ -51,13 +52,19 @@ struct SearchView: View {
                 .padding(14)
             }
             .mapScope(mapScope)
-            .navigationDestination(for: String.self) { query in
-                SearchDetailView(searchText: query)
+            .navigationDestination(for: SearchScreen.self) { screen in
+                switch screen {
+                    case .seachDetail(let searchText):
+                    SearchDetailView(searchText: searchText)
+//                        .navigationBarBackButtonHidden()
+                case .searchSpot(let spotText):
+                    SearchSpotView(spot: spotText)
+                }
             }
         }
     }
 }
 
 #Preview {
-    SearchView()
+    SearchView(searchRouter: Router())
 }
