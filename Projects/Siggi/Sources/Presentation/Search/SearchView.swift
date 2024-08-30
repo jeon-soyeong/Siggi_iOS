@@ -56,7 +56,7 @@ struct SearchView: View {
                 switch screen {
                     case .seachDetail(let searchText):
                     SearchDetailView(searchText: searchText)
-//                        .navigationBarBackButtonHidden()
+                        .navigationBarBackButtonHidden()
                 case .searchSpot(let spotText):
                     SearchSpotView(spot: spotText)
                 }

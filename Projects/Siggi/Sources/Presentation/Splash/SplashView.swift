@@ -12,7 +12,7 @@ struct SplashView: View {
     @Environment(AppRootManager.self) private var appRootManager
 
     var body: some View {
-        Image("siggiIcon")
+        Image(.siggiIcon)
             .resizable()
             .frame(width: 90, height: 90)
             .onAppear() {

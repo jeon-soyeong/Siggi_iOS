@@ -12,7 +12,7 @@ struct SearchResultsRow: View {
     
     var body: some View {
         HStack {
-            Image("place")
+            Image(.place)
                 .resizable()
                 .frame(width: 18, height: 16)
             
