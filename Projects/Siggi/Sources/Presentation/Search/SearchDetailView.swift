@@ -28,6 +28,9 @@ struct SearchDetailView: View {
                 .foregroundStyle(.gray)
         })
         
+        NavigationBar(title: searchText,
+                      backButtonAction: searchRouter.popView,
+                      rightButtonAction: searchRouter.popView)
         Divider()
         ScrollView {            
             LazyVStack(alignment: .leading) {
