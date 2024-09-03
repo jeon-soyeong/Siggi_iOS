@@ -23,8 +23,6 @@ public struct NavigationBar: View {
     }
     
     public var body: some View {
-        Image("backward")
-        
         HStack(spacing: 8) {
             Button(action: {
                 backButtonAction()
