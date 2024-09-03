@@ -54,11 +54,12 @@ struct SearchView: View {
             .mapScope(mapScope)
             .navigationDestination(for: SearchScreen.self) { screen in
                 switch screen {
-                    case .seachDetail(let searchText):
-                    SearchDetailView(searchText: searchText)
+                case .searchResults(let searchText):
+                    SearchResultsView(searchText: searchText)
                         .navigationBarBackButtonHidden()
-                case .searchSpot(let spotText):
-                    SearchSpotView(spot: spotText)
+                case .selectedPlace(let place):
+                    SelectedPlaceView(place: place)
+                        .navigationBarBackButtonHidden()
                 }
             }
         }

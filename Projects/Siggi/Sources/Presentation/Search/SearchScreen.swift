@@ -8,6 +8,6 @@
 import Foundation
 
 public enum SearchScreen: Hashable {
-    case seachDetail(searchText: String)
-    case searchSpot(spot: String)
+    case searchResults(searchText: String)
+    case selectedPlace(place: String)
 }

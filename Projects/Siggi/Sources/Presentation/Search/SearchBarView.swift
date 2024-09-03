@@ -22,11 +22,11 @@ struct SearchBarView: View {
                 TextField("식도락 장소 검색 🍽️", text: $searchText)
                     .fontWeight(.medium)
                     .onSubmit {
-                        searchRouter.pushView(screen: SearchScreen.seachDetail(searchText: searchText))
+                        searchRouter.pushView(screen: SearchScreen.searchResults(searchText: searchText))
                     }
                 Button(action: {
                     if !searchText.isEmpty {
-                        searchRouter.pushView(screen: SearchScreen.seachDetail(searchText: searchText))
+                        searchRouter.pushView(screen: SearchScreen.searchResults(searchText: searchText))
                     }
                     // api query = searchText
                 }, label: {
