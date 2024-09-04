@@ -21,6 +21,9 @@ struct SearchBarView: View {
                 Spacer()
                 TextField("식도락 장소 검색 🍽️", text: $searchText)
                     .fontWeight(.medium)
+                    .onAppear {
+                        searchText = ""
+                    }
                     .onSubmit {
                         searchRouter.pushView(screen: SearchScreen.searchResults(searchText: searchText))
                     }
