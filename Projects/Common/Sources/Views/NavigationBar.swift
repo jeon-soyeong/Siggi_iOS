@@ -17,9 +17,9 @@ public struct NavigationBar: View {
         backButtonAction: @escaping () -> Void = {},
         rightButtonAction: (() -> Void)? = nil
     ) {
+        self.title = title
         self.backButtonAction = backButtonAction
         self.rightButtonAction = rightButtonAction
-        self.title = title
     }
     
     public var body: some View {
