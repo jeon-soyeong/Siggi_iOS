@@ -7,9 +7,12 @@
 //
 
 import SwiftUI
+import Common
 
 struct ContentView: View {
     @Environment(AppRootManager.self) private var appRootManager
+    @Environment(Router.self) var searchRouter
+    @Environment(Router.self) var recordRouter
     @State private var selectedTab: Tab = .search
     
     var body: some View {
@@ -17,23 +20,19 @@ struct ContentView: View {
         case .splash:
             SplashView()
         case .home:
-            VStack {
+            ZStack(alignment: .bottom) {
                 switch selectedTab {
                 case .search:
-                    NavigationStack {
-                        SearchView()
-                    }
+                    SearchView(searchRouter: searchRouter)
                 case .record:
-                    NavigationStack {
-                        RecordView()
-                    }
+                    RecordView(recordRouter: recordRouter)
                 }
                 
                 ZStack {
                     RoundedRectangle(cornerRadius: 20)
                         .fill(Color.white)
                         .shadow(color: .black.opacity(0.2), radius: 20, x: 0, y: 5)
-                        .frame(height: 90)
+                        .frame(height: 85)
                     
                     TabView(selection: $selectedTab) {
                         Text("")
@@ -49,7 +48,7 @@ struct ContentView: View {
                             .tag(Tab.record)
                     }
                     .background(Color.clear)
-                    .frame(height: 90)
+                    .frame(height: 85)
                     .clipShape(RoundedRectangle(cornerRadius: 20))
                     .accentColor(.red)
                     .onAppear {

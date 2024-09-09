@@ -10,7 +10,7 @@ extension Project {
                 destinations: .iOS,
                 product: product,
                 bundleId: "com.\(name)",
-                infoPlist: .default,
+                infoPlist: .file(path: "Resources/InfoPlists/\(name)-Info.plist"),
                 sources: ["Sources/**"],
                 resources: ["Resources/**",],
                 dependencies: dependencies
@@ -20,7 +20,7 @@ extension Project {
                 destinations: .iOS,
                 product: .unitTests,
                 bundleId: "com.\(name)Tests",
-                infoPlist: .default,
+                infoPlist: .file(path: "Resources/InfoPlists/\(name)Tests-Info.plist"),
                 sources: ["Tests/**"],
                 dependencies: [.target(name: name)]
             )

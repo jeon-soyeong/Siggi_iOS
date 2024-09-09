@@ -6,13 +6,45 @@
 //
 
 import SwiftUI
+import Common
 
-struct RecordView: View {
-    var body: some View {
-        Text("RecordView!")
+public struct RecordView: View {
+    @Bindable var recordRouter: Router
+    
+    public var body: some View {
+        NavigationStack(path: $recordRouter.route) {
+            Text("RecordView!")
+            
+            Button(action: {
+                recordRouter.pushView(screen: RecordScreen.recordDetail(recordText: "recordTest"))
+            }, label: {
+                Image(systemName: "magnifyingglass")
+                    .resizable()
+                    .frame(width: 22, height: 22)
+                    .foregroundStyle(.gray)
+            })
+            
+            .navigationDestination(for: RecordScreen.self) { screen in
+                switch screen {
+                    case .recordDetail(let recordText):
+                    RecordDetailView(recordText: "test~!")
+                }
+            }
+        }
     }
 }
 
 #Preview {
-    RecordView()
+    RecordView(recordRouter: Router())
+}
+
+//test
+struct RecordDetailView: View {
+    @Environment(Router.self) private var recordRouter: Router
+    var recordText: String = ""
+    
+    var body: some View {
+        Text("RecordDetailView!")
+        Text(recordText)
+    }
 }
