@@ -8,10 +8,10 @@
 import SwiftUI
 import Common
 
-struct RecordView: View {
+public struct RecordView: View {
     @Bindable var recordRouter: Router
     
-    var body: some View {
+    public var body: some View {
         NavigationStack(path: $recordRouter.route) {
             Text("RecordView!")
             
@@ -38,7 +38,7 @@ struct RecordView: View {
     RecordView(recordRouter: Router())
 }
 
-
+//test
 struct RecordDetailView: View {
     @Environment(Router.self) private var recordRouter: Router
     var recordText: String = ""

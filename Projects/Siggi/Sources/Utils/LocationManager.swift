@@ -8,7 +8,7 @@
 import SwiftUI
 import MapKit
 
-@Observable final class LocationManager: NSObject, CLLocationManagerDelegate {
+@Observable public final class LocationManager: NSObject, CLLocationManagerDelegate {
     private var location = CLLocation()
     private let locationManager = CLLocationManager()
     var position: MapCameraPosition = .automatic

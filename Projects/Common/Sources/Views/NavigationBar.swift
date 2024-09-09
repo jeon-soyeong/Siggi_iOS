@@ -40,16 +40,13 @@ public struct NavigationBar: View {
             Spacer()
             
             if let rightAction = rightButtonAction {
-                Button(
-                    action: {
+                Button(action: {
                         rightAction()
-                    },
-                    label: {
-                        Image(.close)
-                            .resizable()
-                            .frame(width: 28, height: 28)
-                    }
-                )
+                }, label: {
+                    Image(.close)
+                        .resizable()
+                        .frame(width: 28, height: 28)
+                })
             }
         }
         .frame(height: 40)

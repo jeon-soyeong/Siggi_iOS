@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-@Observable final class AppRootManager {
+@Observable public final class AppRootManager {
     var currentRoot: AppRoots = .splash
     
     enum AppRoots {

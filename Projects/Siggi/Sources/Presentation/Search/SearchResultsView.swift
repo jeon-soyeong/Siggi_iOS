@@ -8,14 +8,15 @@
 import SwiftUI
 import Common
 
-struct SearchResultsView: View {
+public struct SearchResultsView: View {
     @Environment(Router.self) private var searchRouter
     private let tapBarHeight: CGFloat = 85
     var searchText: String = ""
+    //test
     let array: [String] = ["봉피양", "우래옥","능라도", "을밀대", "필동면옥", "g", "d", "a", "b"
                            , "🍎", "🥝", "🍐", "🍊", "🍏", "🍒", "🍉", "🍇", "🫐", "c", "e", "f", "h", "i", "j", "k"]
     
-    var body: some View {
+    public var body: some View {
         NavigationBar(title: searchText,
                       backButtonAction: searchRouter.popView,
                       rightButtonAction: searchRouter.popView)

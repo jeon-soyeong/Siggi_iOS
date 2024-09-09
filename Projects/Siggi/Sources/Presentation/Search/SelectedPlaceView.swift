@@ -8,11 +8,11 @@
 import SwiftUI
 import Common
 
-struct SelectedPlaceView: View {
+public struct SelectedPlaceView: View {
     @Environment(Router.self) private var searchRouter
     var place: String = ""
     
-    var body: some View {
+    public var body: some View {
         NavigationBar(title: place,
                       backButtonAction: searchRouter.popView,
                       rightButtonAction: searchRouter.popToRootView)

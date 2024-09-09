@@ -7,10 +7,10 @@
 
 import SwiftUI
 
-struct SearchResultsRow: View {
+public struct SearchResultsRow: View {
     var place: String
     
-    var body: some View {
+    public var body: some View {
         HStack {
             Image(.place)
                 .resizable()

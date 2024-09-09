@@ -10,14 +10,14 @@ import SwiftUI
 import MapKit
 import Common
 
-struct SearchView: View {
+public struct SearchView: View {
     @Namespace var mapScope
     @State private var locationManager = LocationManager()
     @State private var position: MapCameraPosition = .automatic
     @State private var isPositionUpdated = false
     @Bindable var searchRouter: Router
     
-    var body: some View {
+    public var body: some View {
         NavigationStack(path: $searchRouter.route) {
             ZStack(alignment: .top) {
                 Map(position: $position, scope: mapScope) {
