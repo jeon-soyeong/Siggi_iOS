@@ -8,16 +8,21 @@
 import SwiftUI
 
 @Observable public final class SearchViewModel: ViewModelType {
+    public var state: State
+
     public enum Action {
         case searchButtonTapped(searchText: String)
     }
 
     public struct State {
-        var searchPlaceResults: SearchPlaces?
+        var searchPlaceResults: [Document]
         var isEnd: Bool = false
+        var isRequesting = false
     }
 
-    public var state = State()
+    public init() {
+        self.state = State(searchPlaceResults: [])
+    }
 
     public func transform(type: Action) {
         Task {
@@ -28,14 +33,15 @@ import SwiftUI
         }
     }
 
-    @MainActor
     public func fetchSearchPlaceResults(searchText: String) async throws {
+        state.isRequesting = true
         guard let request = URLRequest(type: SearchAPI.searchPlace(query: searchText, page: 1, size: 15)) else {
             return
         }
         // TODO: UseCase로 변경
         let searchPlace: SearchPlaces = try await APIService().request(with: request)
         print("searchPlace: \(searchPlace)")
-        state.searchPlaceResults = searchPlace
+        state.searchPlaceResults = searchPlace.documents
+        state.isRequesting = false
     }
 }

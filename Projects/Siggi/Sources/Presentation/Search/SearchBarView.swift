@@ -25,12 +25,12 @@ public struct SearchBarView: View {
                         searchText = ""
                     }
                     .onSubmit {
-                        SearchViewModel().transform(type: .searchButtonTapped(searchText: searchText))
-                        searchRouter.pushView(screen: SearchScreen.searchResults(searchText: searchText))
+                        if !searchText.isEmpty {
+                            searchRouter.pushView(screen: SearchScreen.searchResults(searchText: searchText))
+                        }
                     }
                 Button(action: {
                     if !searchText.isEmpty {
-                        SearchViewModel().transform(type: .searchButtonTapped(searchText: searchText))
                         searchRouter.pushView(screen: SearchScreen.searchResults(searchText: searchText))
                     }
                 }, label: {

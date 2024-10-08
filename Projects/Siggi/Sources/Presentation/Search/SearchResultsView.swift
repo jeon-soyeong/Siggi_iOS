@@ -10,12 +10,10 @@ import Common
 
 public struct SearchResultsView: View {
     @Environment(Router.self) private var searchRouter
+    @State private var searchViewModel = SearchViewModel()
     private let tapBarHeight: CGFloat = 85
     var searchText: String = ""
-    //test
-    let array: [String] = ["봉피양", "우래옥","능라도", "을밀대", "필동면옥", "g", "d", "a", "b"
-                           , "🍎", "🥝", "🍐", "🍊", "🍏", "🍒", "🍉", "🍇", "🫐", "c", "e", "f", "h", "i", "j", "k"]
-    
+
     public var body: some View {
         NavigationBar(title: searchText,
                       backButtonAction: searchRouter.popView,
@@ -23,13 +21,16 @@ public struct SearchResultsView: View {
         Divider()
         ScrollView {
             LazyVStack(alignment: .leading) {
-                ForEach(array, id: \.self) { nangMyeon in
-                    SearchResultsRow(place: nangMyeon)
+                ForEach(searchViewModel.state.searchPlaceResults.indices, id: \.self) { index in
+                    SearchResultsRow(place: searchViewModel.state.searchPlaceResults[index].place_name)
                         .onTapGesture {
-                            searchRouter.pushView(screen: SearchScreen.selectedPlace(place: nangMyeon))
+                            searchRouter.pushView(screen: SearchScreen.selectedPlace(place: searchViewModel.state.searchPlaceResults[index]))
                         }
                 }
             }
+        }
+        .onAppear {
+            searchViewModel.transform(type: .searchButtonTapped(searchText: searchText))
         }
         .safeAreaPadding(EdgeInsets(top: 0, leading: 0, bottom: tapBarHeight, trailing: 0))
     }
