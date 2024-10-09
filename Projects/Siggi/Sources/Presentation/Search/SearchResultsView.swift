@@ -22,7 +22,7 @@ public struct SearchResultsView: View {
         ScrollView {
             LazyVStack(alignment: .leading) {
                 ForEach(searchViewModel.state.searchPlaceResults.indices, id: \.self) { index in
-                    SearchResultsRow(place: searchViewModel.state.searchPlaceResults[index].place_name)
+                    SearchResultsRow(place: searchViewModel.state.searchPlaceResults[index].placeName)
                         .onTapGesture {
                             searchRouter.pushView(screen: SearchScreen.selectedPlace(place: searchViewModel.state.searchPlaceResults[index]))
                         }

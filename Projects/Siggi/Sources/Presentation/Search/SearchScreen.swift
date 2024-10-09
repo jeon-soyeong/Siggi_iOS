@@ -9,5 +9,5 @@ import Foundation
 
 public enum SearchScreen: Hashable {
     case searchResults(searchText: String)
-    case selectedPlace(place: String)
+    case selectedPlace(place: Document)
 }
