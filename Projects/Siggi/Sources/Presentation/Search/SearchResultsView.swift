@@ -21,10 +21,10 @@ public struct SearchResultsView: View {
         Divider()
         ScrollView {
             LazyVStack(alignment: .leading) {
-                ForEach(searchViewModel.state.searchPlaceResults.indices, id: \.self) { index in
-                    SearchResultsRow(place: searchViewModel.state.searchPlaceResults[index])
+                ForEach(searchViewModel.state.searchPlaceResults, id: \.self) { searchPlace in
+                    SearchResultsRow(place: searchPlace)
                         .onTapGesture {
-                            searchRouter.pushView(screen: SearchScreen.selectedPlace(place: searchViewModel.state.searchPlaceResults[index]))
+                            searchRouter.pushView(screen: SearchScreen.selectedPlace(place: searchPlace))
                         }
                 }
             }
