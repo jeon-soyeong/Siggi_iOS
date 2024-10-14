@@ -23,6 +23,11 @@ public struct SearchResultsView: View {
             LazyVStack(alignment: .leading) {
                 ForEach(searchViewModel.state.searchPlaceResults, id: \.self) { searchPlace in
                     SearchResultsRow(place: searchPlace)
+                        .onAppear {
+                            if searchPlace == searchViewModel.state.searchPlaceResults.last {
+                                searchViewModel.transform(type: .searchButtonTapped(searchText: searchText))
+                            }
+                        }
                         .onTapGesture {
                             searchRouter.pushView(screen: SearchScreen.selectedPlace(place: searchPlace))
                         }

@@ -15,6 +15,8 @@ import SwiftUI
     }
 
     public struct State {
+        let perPage = 15
+        var currentPage = 1
         var searchPlaceResults: [Document]
         var isEnd: Bool = false
         var isRequesting = false
@@ -34,14 +36,17 @@ import SwiftUI
     }
 
     public func fetchSearchPlaceResults(searchText: String) async throws {
+        guard state.isEnd == false else { return }
         state.isRequesting = true
-        guard let request = URLRequest(type: SearchAPI.searchPlace(query: searchText, page: 1, size: 15)) else {
+        guard let request = URLRequest(type: SearchAPI.searchPlace(query: searchText, page: state.currentPage, size: state.perPage)) else {
             return
         }
         // TODO: UseCase로 변경
         let searchPlace: SearchPlaces = try await APIService().request(with: request)
         print("searchPlace: \(searchPlace)")
-        state.searchPlaceResults = searchPlace.documents
+        state.searchPlaceResults.append(contentsOf: searchPlace.documents)
+        state.currentPage += 1
+        state.isEnd = searchPlace.meta.isEnd
         state.isRequesting = false
     }
 }
