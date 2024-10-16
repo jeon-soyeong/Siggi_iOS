@@ -9,6 +9,7 @@ import SwiftUI
 
 @Observable public final class SearchViewModel: ViewModelType {
     public var state: State
+    private let searchUseCase = DefaultSearchUseCase()
 
     public enum Action {
         case searchButtonTapped(searchText: String)
@@ -38,11 +39,7 @@ import SwiftUI
     public func fetchSearchPlaceResults(searchText: String) async throws {
         guard state.isEnd == false else { return }
         state.isRequesting = true
-        guard let request = URLRequest(type: SearchAPI.searchPlace(query: searchText, page: state.currentPage, size: state.perPage)) else {
-            return
-        }
-        // TODO: UseCase로 변경
-        let searchPlace: SearchPlaces = try await APIService().request(with: request)
+        let searchPlace = try await searchUseCase.execute(searchText: searchText, page: state.currentPage, size: state.perPage)
         print("searchPlace: \(searchPlace)")
         state.searchPlaceResults.append(contentsOf: searchPlace.documents)
         state.currentPage += 1
