@@ -12,7 +12,7 @@ import SwiftUI
     private let searchUseCase: SearchUseCase
 
     public enum Action {
-        case searchButtonTapped(searchText: String)
+        case fetchSearchPlace(searchText: String)
     }
 
     public struct State {
@@ -31,7 +31,7 @@ import SwiftUI
     public func transform(type: Action) {
         Task {
             switch type {
-            case .searchButtonTapped(let searchText):
+            case .fetchSearchPlace(let searchText):
                 try await fetchSearchPlaceResults(searchText: searchText)
             }
         }

@@ -31,7 +31,7 @@ public struct SearchResultsView: View {
                     SearchResultsRow(place: searchPlace)
                         .onAppear {
                             if searchPlace == searchViewModel.state.searchPlaceResults.last {
-                                searchViewModel.transform(type: .searchButtonTapped(searchText: searchText))
+                                searchViewModel.transform(type: .fetchSearchPlace(searchText: searchText))
                             }
                         }
                         .onTapGesture {
@@ -41,7 +41,7 @@ public struct SearchResultsView: View {
             }
         }
         .onAppear {
-            searchViewModel.transform(type: .searchButtonTapped(searchText: searchText))
+            searchViewModel.transform(type: .fetchSearchPlace(searchText: searchText))
         }
         .safeAreaPadding(EdgeInsets(top: 0, leading: 0, bottom: tapBarHeight, trailing: 0))
     }
