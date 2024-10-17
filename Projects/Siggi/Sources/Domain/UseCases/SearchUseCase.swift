@@ -12,7 +12,11 @@ public protocol SearchUseCase {
 }
 
 public final class DefaultSearchUseCase: SearchUseCase {
-    public let searchRepository = DefaultSearchRepository()
+    private let searchRepository: SearchRepository
+
+    public init(searchRepository: SearchRepository) {
+        self.searchRepository = searchRepository
+    }
 
     public func execute(searchText: String, page: Int, size: Int) async throws -> SearchPlaces {
         return try await searchRepository.fetchSearchPlaceResults(searchText: searchText, page: page, size: size)

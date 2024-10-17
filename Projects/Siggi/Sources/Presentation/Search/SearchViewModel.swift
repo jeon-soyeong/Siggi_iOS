@@ -9,7 +9,7 @@ import SwiftUI
 
 @Observable public final class SearchViewModel: ViewModelType {
     public var state: State
-    private let searchUseCase = DefaultSearchUseCase()
+    private let searchUseCase: SearchUseCase
 
     public enum Action {
         case searchButtonTapped(searchText: String)
@@ -23,8 +23,9 @@ import SwiftUI
         var isRequesting = false
     }
 
-    public init() {
+    public init(searchUseCase: SearchUseCase) {
         self.state = State(searchPlaceResults: [])
+        self.searchUseCase = searchUseCase
     }
 
     public func transform(type: Action) {

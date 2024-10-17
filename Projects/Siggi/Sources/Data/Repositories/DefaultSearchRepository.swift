@@ -8,7 +8,11 @@
 import Foundation
 
 public final class DefaultSearchRepository: SearchRepository {
-    private let apiService = APIService()
+    private let apiService: APIService
+
+    public init(apiService: APIService) {
+        self.apiService = apiService
+    }
 
     public func fetchSearchPlaceResults(searchText: String, page: Int, size: Int) async throws -> SearchPlaces {
         guard let request = URLRequest(type: SearchAPI.searchPlace(query: searchText, page: page, size: size)) else {

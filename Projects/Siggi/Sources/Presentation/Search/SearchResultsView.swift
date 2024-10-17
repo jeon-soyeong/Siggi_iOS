@@ -10,7 +10,13 @@ import Common
 
 public struct SearchResultsView: View {
     @Environment(Router.self) private var searchRouter
-    @State private var searchViewModel = SearchViewModel()
+    @State private var searchViewModel = SearchViewModel(
+        searchUseCase: DefaultSearchUseCase(
+            searchRepository: DefaultSearchRepository(
+                apiService: APIService()
+            )
+        )
+    )
     private let tapBarHeight: CGFloat = 85
     var searchText: String = ""
 
