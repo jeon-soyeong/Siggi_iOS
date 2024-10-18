@@ -20,7 +20,7 @@ import SwiftUI
         var currentPage = 1
         var searchPlaceResults: [Document]
         var isEnd: Bool = false
-        var isRequesting = false
+        var isLoading = false
     }
 
     public init(searchUseCase: SearchUseCase) {
@@ -39,12 +39,11 @@ import SwiftUI
 
     public func fetchSearchPlaceResults(searchText: String) async throws {
         guard state.isEnd == false else { return }
-        state.isRequesting = true
+        state.isLoading = true
         let searchPlace = try await searchUseCase.execute(searchText: searchText, page: state.currentPage, size: state.perPage)
-        print("searchPlace: \(searchPlace)")
         state.searchPlaceResults.append(contentsOf: searchPlace.documents)
         state.currentPage += 1
         state.isEnd = searchPlace.meta.isEnd
-        state.isRequesting = false
+        state.isLoading = false
     }
 }

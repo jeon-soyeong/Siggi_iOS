@@ -17,7 +17,7 @@ public struct SearchResultsView: View {
             )
         )
     )
-    private let tapBarHeight: CGFloat = 85
+    private let tabBarHeight: CGFloat = 85
     var searchText: String = ""
 
     public var body: some View {
@@ -25,25 +25,33 @@ public struct SearchResultsView: View {
                       backButtonAction: searchRouter.popView,
                       rightButtonAction: searchRouter.popView)
         Divider()
-        ScrollView {
-            LazyVStack(alignment: .leading) {
-                ForEach(searchViewModel.state.searchPlaceResults, id: \.self) { searchPlace in
-                    SearchResultsRow(place: searchPlace)
-                        .onAppear {
-                            if searchPlace == searchViewModel.state.searchPlaceResults.last {
-                                searchViewModel.transform(type: .fetchSearchPlace(searchText: searchText))
+
+        ZStack {
+            ScrollView {
+                LazyVStack(alignment: .leading) {
+                    ForEach(searchViewModel.state.searchPlaceResults, id: \.self) { searchPlace in
+                        SearchResultsRow(place: searchPlace)
+                            .onAppear {
+                                if searchPlace == searchViewModel.state.searchPlaceResults.last {
+                                    searchViewModel.transform(type: .fetchSearchPlace(searchText: searchText))
+                                }
                             }
-                        }
-                        .onTapGesture {
-                            searchRouter.pushView(screen: SearchScreen.selectedPlace(place: searchPlace))
-                        }
+                            .onTapGesture {
+                                searchRouter.pushView(screen: SearchScreen.selectedPlace(place: searchPlace))
+                            }
+                    }
                 }
             }
+            .onAppear {
+                searchViewModel.transform(type: .fetchSearchPlace(searchText: searchText))
+            }
+
+            if searchViewModel.state.isLoading {
+                ProgressView()
+                    .progressViewStyle(.circular)
+            }
         }
-        .onAppear {
-            searchViewModel.transform(type: .fetchSearchPlace(searchText: searchText))
-        }
-        .safeAreaPadding(EdgeInsets(top: 0, leading: 0, bottom: tapBarHeight, trailing: 0))
+        .safeAreaPadding(EdgeInsets(top: 0, leading: 0, bottom: tabBarHeight, trailing: 0))
     }
 }
 
