@@ -10,12 +10,14 @@ import Common
 
 public struct SelectedPlaceView: View {
     @Environment(Router.self) private var searchRouter
-    var place: String = ""
-    
+    var place: Document?
+
     public var body: some View {
-        NavigationBar(title: place,
-                      backButtonAction: searchRouter.popView,
-                      rightButtonAction: searchRouter.popToRootView)
+        if let place = place {
+            NavigationBar(title: place.placeName,
+                          backButtonAction: searchRouter.popView,
+                          rightButtonAction: searchRouter.popToRootView)
+        }
     }
 }
 

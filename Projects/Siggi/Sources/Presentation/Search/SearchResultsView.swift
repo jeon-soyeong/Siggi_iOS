@@ -10,28 +10,48 @@ import Common
 
 public struct SearchResultsView: View {
     @Environment(Router.self) private var searchRouter
-    private let tapBarHeight: CGFloat = 85
+    @State private var searchViewModel = SearchViewModel(
+        searchUseCase: DefaultSearchUseCase(
+            searchRepository: DefaultSearchRepository(
+                apiService: APIService()
+            )
+        )
+    )
+    private let tabBarHeight: CGFloat = 85
     var searchText: String = ""
-    //test
-    let array: [String] = ["봉피양", "우래옥","능라도", "을밀대", "필동면옥", "g", "d", "a", "b"
-                           , "🍎", "🥝", "🍐", "🍊", "🍏", "🍒", "🍉", "🍇", "🫐", "c", "e", "f", "h", "i", "j", "k"]
-    
+
     public var body: some View {
         NavigationBar(title: searchText,
                       backButtonAction: searchRouter.popView,
                       rightButtonAction: searchRouter.popView)
         Divider()
-        ScrollView {
-            LazyVStack(alignment: .leading) {
-                ForEach(array, id: \.self) { nangMyeon in
-                    SearchResultsRow(place: nangMyeon)
-                        .onTapGesture {
-                            searchRouter.pushView(screen: SearchScreen.selectedPlace(place: nangMyeon))
-                        }
+
+        ZStack {
+            ScrollView {
+                LazyVStack(alignment: .leading) {
+                    ForEach(searchViewModel.state.searchPlaceResults, id: \.self) { searchPlace in
+                        SearchResultsRow(place: searchPlace)
+                            .onAppear {
+                                if searchPlace == searchViewModel.state.searchPlaceResults.last {
+                                    searchViewModel.transform(type: .fetchSearchPlace(searchText: searchText))
+                                }
+                            }
+                            .onTapGesture {
+                                searchRouter.pushView(screen: SearchScreen.selectedPlace(place: searchPlace))
+                            }
+                    }
                 }
             }
+            .onAppear {
+                searchViewModel.transform(type: .fetchSearchPlace(searchText: searchText))
+            }
+
+            if searchViewModel.state.isLoading {
+                ProgressView()
+                    .progressViewStyle(.circular)
+            }
         }
-        .safeAreaPadding(EdgeInsets(top: 0, leading: 0, bottom: tapBarHeight, trailing: 0))
+        .safeAreaPadding(EdgeInsets(top: 0, leading: 0, bottom: tabBarHeight, trailing: 0))
     }
 }
 

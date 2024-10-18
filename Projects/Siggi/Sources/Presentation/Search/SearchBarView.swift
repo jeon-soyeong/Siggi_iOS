@@ -11,7 +11,7 @@ import Common
 public struct SearchBarView: View {
     @Environment(Router.self) private var searchRouter
     @State private var searchText: String = ""
-    
+
     public var body: some View {
         ZStack {
             RoundedRectangle(cornerRadius: 12)
@@ -25,13 +25,14 @@ public struct SearchBarView: View {
                         searchText = ""
                     }
                     .onSubmit {
-                        searchRouter.pushView(screen: SearchScreen.searchResults(searchText: searchText))
+                        if !searchText.isEmpty {
+                            searchRouter.pushView(screen: SearchScreen.searchResults(searchText: searchText))
+                        }
                     }
                 Button(action: {
                     if !searchText.isEmpty {
                         searchRouter.pushView(screen: SearchScreen.searchResults(searchText: searchText))
                     }
-                    // api query = searchText
                 }, label: {
                     Image(systemName: "magnifyingglass")
                         .resizable()
