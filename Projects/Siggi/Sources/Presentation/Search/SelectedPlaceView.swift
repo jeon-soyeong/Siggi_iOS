@@ -31,6 +31,10 @@ public struct SelectedPlaceView: View {
                         }
                     }
                 }
+                .mapControls {
+                    MapCompass()
+                        .mapControlVisibility(.hidden)
+                }
 
                 Image(.recording)
                     .resizable()
