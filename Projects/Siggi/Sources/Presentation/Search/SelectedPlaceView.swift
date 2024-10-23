@@ -40,6 +40,9 @@ public struct SelectedPlaceView: View {
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .padding(EdgeInsets(top: 0, leading: 18, bottom: tabBarHeight, trailing: 18))
+                    .onTapGesture {
+                        searchRouter.pushView(screen: SearchScreen.recordPlace(place: place))
+                    }
             }
         }
     }
