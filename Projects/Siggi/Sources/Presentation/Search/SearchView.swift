@@ -60,6 +60,9 @@ public struct SearchView: View {
                 case .selectedPlace(let place):
                     SelectedPlaceView(place: place)
                         .navigationBarBackButtonHidden()
+                case .recordPlace(let place):
+                    RecordPlaceView(place: place)
+                        .navigationBarBackButtonHidden()
                 }
             }
         }
