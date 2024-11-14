@@ -47,14 +47,25 @@ struct PhotoView: View {
     @Binding var isLoading: Bool
 
     var body: some View {
-        VStack {
-            HStack {
-                PhotosPicker(
-                    selection: $selectedItems,
-                    maxSelectionCount: 20,
-                    selectionBehavior: .ordered,
-                    matching: .images) {
-                        Text("사진 선택하기")
+        HStack {
+            PhotosPicker(
+                selection: $selectedItems,
+                maxSelectionCount: 20,
+                selectionBehavior: .ordered,
+                matching: .images) {
+                    ZStack {
+                        RoundedRectangle(cornerRadius: 15)
+                            .stroke(Color(.gray), lineWidth: 1)
+                            .frame(width: 100, height: 100)
+                        VStack {
+                            Image(systemName: "photo.badge.plus")
+                                .resizable()
+                                .frame(width: 40, height: 30)
+                            Text("사진등록")
+                                .font(.subheadline)
+                        }
+                        .foregroundColor(.gray)
+                    }
                 }
                 .onChange(of: selectedItems) {
                     Task {
@@ -89,16 +100,16 @@ struct PhotoView: View {
                         previousSelectedItems = selectedItems
                     }
                 }
-            }
 
             ScrollView(.horizontal) {
                 HStack {
                     ForEach(selectedImages.indices, id: \.self) { index in
-                        ZStack(alignment: .bottomTrailing)  {
+                        ZStack(alignment: .topTrailing)  {
                             Image(uiImage: selectedImages[index])
                                 .resizable()
                                 .scaledToFill()
                                 .frame(width: 100, height: 100)
+                                .cornerRadius(15)
                                 .clipped()
 
                             Button(action: {
@@ -117,7 +128,7 @@ struct PhotoView: View {
                                     isLoading = false
                                 }
                             }, label: {
-                                Image(systemName: "x.circle")
+                                Image(.remove)
                                     .resizable()
                                     .frame(width: 20, height: 20)
                                     .padding(5)
