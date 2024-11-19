@@ -11,8 +11,9 @@ import PhotosUI
 
 struct RecordPlaceView: View {
     @Environment(Router.self) private var searchRouter
-    var place: Document?
     @State private var isLoading: Bool = false
+    @State private var text: String = ""
+    var place: Document?
 
     var body: some View {
         ZStack {
@@ -24,7 +25,32 @@ struct RecordPlaceView: View {
                     ScrollView {
                         PhotoView(isLoading: $isLoading)
                             .padding()
+                ScrollView {
+                    PhotoView(isLoading: $isLoading)
+                        .padding(20)
+
+                    VStack(alignment: .trailing) {
+                        TextField("리뷰를 작성해주세요 🖋️", text: $text, axis: .vertical)
+                            .lineLimit(9...)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 10)
+                                    .stroke(Color.gray, lineWidth: 1)
+                                    .padding(-10)
+                            )
+                            .padding(.horizontal, 30)
+                            .onChange(of: text) { oldValue, newValue in
+                                if newValue.count > 500 {
+                                    text = String(newValue.prefix(500))
+                                }
+                            }
+
+                        Text("\(text.count) / 500")
+                            .font(.caption)
+                            .foregroundColor(.gray)
+                            .padding(.top, 10)
+                            .padding(.trailing, 20)
                     }
+                    .padding(.top, 20)
                 }
             }
 
