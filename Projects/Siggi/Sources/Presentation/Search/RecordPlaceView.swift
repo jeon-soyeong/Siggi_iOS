@@ -60,6 +60,7 @@ struct RecordPlaceView: View {
                             searchRouter.popToRootView()
                         }
                 }
+                .scrollIndicators(.hidden)
             }
 
             if isLoading {
