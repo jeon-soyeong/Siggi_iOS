@@ -51,6 +51,14 @@ struct RecordPlaceView: View {
                             .padding(.trailing, 20)
                     }
                     .padding(.top, 20)
+
+                    Image(.save)
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .padding(EdgeInsets(top: 30, leading: 18, bottom: 0, trailing: 18))
+                        .onTapGesture {
+                            searchRouter.popToRootView()
+                        }
                 }
             }
 
