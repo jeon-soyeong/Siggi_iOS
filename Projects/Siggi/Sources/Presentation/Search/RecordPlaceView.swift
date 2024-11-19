@@ -13,6 +13,7 @@ struct RecordPlaceView: View {
     @Environment(Router.self) private var searchRouter
     @State private var isLoading: Bool = false
     @State private var text: String = ""
+    @FocusState private var isFocused: Bool
     var place: Document?
 
     var body: some View {
@@ -31,6 +32,7 @@ struct RecordPlaceView: View {
 
                     VStack(alignment: .trailing) {
                         TextField("리뷰를 작성해주세요 🖋️", text: $text, axis: .vertical)
+                            .focused($isFocused)
                             .lineLimit(9...)
                             .overlay(
                                 RoundedRectangle(cornerRadius: 10)
@@ -59,6 +61,10 @@ struct RecordPlaceView: View {
                         .onTapGesture {
                             searchRouter.popToRootView()
                         }
+                }
+                .contentShape(Rectangle())
+                .onTapGesture {
+                    isFocused = false
                 }
                 .scrollIndicators(.hidden)
             }
