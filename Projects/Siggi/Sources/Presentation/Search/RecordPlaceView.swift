@@ -11,10 +11,12 @@ import PhotosUI
 
 struct RecordPlaceView: View {
     @Environment(Router.self) private var searchRouter
+    var place: Document?
+    private let maximumRating: Int = 5
+    @State private var rating: Int = 0
     @State private var isLoading: Bool = false
     @State private var text: String = ""
     @FocusState private var isFocused: Bool
-    var place: Document?
 
     var body: some View {
         ZStack {
@@ -23,15 +25,28 @@ struct RecordPlaceView: View {
                     NavigationBar(title: place.placeName,
                                   backButtonAction: { searchRouter.popView() },
                                   rightButtonAction: { searchRouter.popToRootView() })
-                    ScrollView {
-                        PhotoView(isLoading: $isLoading)
-                            .padding()
+
+                Divider()
+
                 ScrollView {
+                    HStack {
+                        ForEach(1...maximumRating, id: \.self) { count in
+                            Image(systemName: count > rating ? "star" : "star.fill")
+                                .resizable()
+                                .frame(width: 30, height: 30)
+                                .foregroundColor(count > rating ? .gray : .red)
+                                .onTapGesture {
+                                    rating = count
+                                }
+                        }
+                    }
+                    .padding(30)
+
                     PhotoView(isLoading: $isLoading)
                         .padding(20)
 
                     VStack(alignment: .trailing) {
-                        TextField("리뷰를 작성해주세요 🖋️", text: $text, axis: .vertical)
+                        TextField("리뷰를 작성해주세요 🖊️", text: $text, axis: .vertical)
                             .focused($isFocused)
                             .lineLimit(9...)
                             .overlay(
