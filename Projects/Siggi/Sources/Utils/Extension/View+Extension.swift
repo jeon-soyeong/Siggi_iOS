@@ -8,8 +8,8 @@
 
 import SwiftUI
 
-public extension View {
-    func serviceDIContainer() -> some View {
+extension View {
+    public func serviceDIContainer() -> some View {
         modifier(DIContainerModifier())
     }
 }
