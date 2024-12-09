@@ -53,6 +53,7 @@ public struct SearchView: View {
                     }
                 }
                 .padding(14)
+                .navigationBarBackButtonHidden()
             }
             .mapScope(mapScope)
             .navigationDestination(for: SearchScreen.self) { screen in
