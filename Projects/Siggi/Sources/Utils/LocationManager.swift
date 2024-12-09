@@ -5,45 +5,35 @@
 //  Created by 전소영 on 2024/07/12.
 //
 
-import SwiftUI
 import MapKit
+import SwiftUI
 
 @Observable public final class LocationManager: NSObject, CLLocationManagerDelegate {
-    private var location = CLLocation()
-    private let locationManager = CLLocationManager()
-    var position: MapCameraPosition = .automatic
-    
+    static let shared = LocationManager()
+    var locationManager: CLLocationManager = CLLocationManager()
+    var region: MKCoordinateRegion = MKCoordinateRegion()
+
     override init() {
         super.init()
-        locationManager.delegate = self
+        self.locationManager.delegate = self
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+
+        if self.locationManager.authorizationStatus == .notDetermined {
+            self.locationManager.requestWhenInUseAuthorization()
+            self.locationManager.startUpdatingLocation()
+        }
     }
-    
-    func startCurrentLocationUpdates() async throws {
-        if locationManager.authorizationStatus == .notDetermined {
-            locationManager.requestWhenInUseAuthorization()
+
+    public func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        locations.last.map {
+            region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: $0.coordinate.latitude, 
+                                                                       longitude: $0.coordinate.longitude),
+                                        span: MKCoordinateSpan(latitudeDelta: 0.05,
+                                                               longitudeDelta: 0.05))
         }
-        
-        Task {
-            do {
-                for try await update in CLLocationUpdate.liveUpdates() {
-                    guard let updatedLocation = update.location else { return }
-                    self.location = updatedLocation
-                    
-                    if update.isStationary {
-                        break
-                    }
-                    
-                    let center = CLLocationCoordinate2D(
-                        latitude: location.coordinate.latitude,
-                        longitude: location.coordinate.longitude)
-                    let region = MKCoordinateRegion(
-                        center: center,
-                        span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01))
-                    position = MapCameraPosition.region(region)
-                }
-            } catch {
-                print("Location Update Failed")
-            }
-        }
+    }
+
+    public func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        print(error)
     }
 }
