@@ -137,7 +137,26 @@ struct RecordPlaceView: View {
             }
 
             if isRegister {
-                // 팝업
+                Color.black.opacity(0.5)
+                        .edgesIgnoringSafeArea(.all)
+
+                ZStack {
+                    RoundedRectangle(cornerRadius: 15)
+                        .fill(Color.white)
+                        .stroke(Color(.lightGray), lineWidth: 2)
+                        .frame(width: 330, height: 380)
+                    VStack {
+                        Image(.complete)
+                            .resizable()
+                            .frame(width: 130, height: 130)
+                            .padding()
+
+                        Text("저장중입니다.\n잠시만 기다려주세요!")
+                            .font(.headline)
+                            .multilineTextAlignment(.center)
+                            .padding()
+                    }
+                }
             }
         }
     }
