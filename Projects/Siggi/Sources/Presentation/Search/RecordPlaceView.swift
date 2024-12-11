@@ -114,49 +114,9 @@ struct RecordPlaceView: View {
             }
 
             if isLoading {
-                Color.black.opacity(0.5)
-                        .edgesIgnoringSafeArea(.all)
-
-                ZStack {
-                    RoundedRectangle(cornerRadius: 15)
-                        .fill(Color.white)
-                        .stroke(Color(.lightGray), lineWidth: 2)
-                        .frame(width: 330, height: 380)
-                    VStack {
-                        Image(.gallery)
-                            .resizable()
-                            .frame(width: 130, height: 130)
-                            .padding()
-
-                        Text("사진을 등록하는 중입니다.\n잠시만 기다려주세요!")
-                            .font(.headline)
-                            .multilineTextAlignment(.center)
-                            .padding()
-                    }
-                }
-            }
-
-            if isRegister {
-                Color.black.opacity(0.5)
-                        .edgesIgnoringSafeArea(.all)
-
-                ZStack {
-                    RoundedRectangle(cornerRadius: 15)
-                        .fill(Color.white)
-                        .stroke(Color(.lightGray), lineWidth: 2)
-                        .frame(width: 330, height: 380)
-                    VStack {
-                        Image(.complete)
-                            .resizable()
-                            .frame(width: 130, height: 130)
-                            .padding()
-
-                        Text("저장중입니다.\n잠시만 기다려주세요!")
-                            .font(.headline)
-                            .multilineTextAlignment(.center)
-                            .padding()
-                    }
-                }
+                PopUpView(imageName: "gallery", message: "사진을 등록하는 중입니다.\n잠시만 기다려주세요!")
+            } else if isRegister {
+                PopUpView(imageName: "complete", message: "저장 중입니다.\n잠시만 기다려주세요!")
             }
         }
     }
@@ -236,6 +196,37 @@ struct PhotoView: View {
                         }
                     }
                 }
+            }
+        }
+    }
+}
+
+struct PopUpView: View {
+    var imageName: String
+    var message: String
+
+    var body: some View {
+        ZStack {
+            Color.black.opacity(0.5)
+                .edgesIgnoringSafeArea(.all)
+
+            RoundedRectangle(cornerRadius: 15)
+                .fill(Color.white)
+                .stroke(Color(.lightGray), lineWidth: 2)
+                .shadow(radius: 10)
+                .frame(width: 330, height: 380)
+
+            VStack {
+                Image(imageName)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 130, height: 130)
+                    .padding()
+
+                Text(message)
+                    .font(.headline)
+                    .multilineTextAlignment(.center)
+                    .padding()
             }
         }
     }
