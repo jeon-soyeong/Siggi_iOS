@@ -16,7 +16,7 @@ struct RecordPlaceView: View {
     @State private var selectedImages: [UIImage] = []
     @State private var rating: Int = 0
     @State private var text: String = ""
-    @State private var isLoading: Bool = false
+    @State private var isLoading: Bool = false 
     @State private var isRegister: Bool = false
     @FocusState private var isFocused: Bool
     private let maximumRating: Int = 5
@@ -114,7 +114,26 @@ struct RecordPlaceView: View {
             }
 
             if isLoading {
-                // 팝업
+                Color.black.opacity(0.5)
+                        .edgesIgnoringSafeArea(.all)
+
+                ZStack {
+                    RoundedRectangle(cornerRadius: 15)
+                        .fill(Color.white)
+                        .stroke(Color(.lightGray), lineWidth: 2)
+                        .frame(width: 330, height: 380)
+                    VStack {
+                        Image(.gallery)
+                            .resizable()
+                            .frame(width: 130, height: 130)
+                            .padding()
+
+                        Text("사진을 등록하는 중입니다.\n잠시만 기다려주세요!")
+                            .font(.headline)
+                            .multilineTextAlignment(.center)
+                            .padding()
+                    }
+                }
             }
 
             if isRegister {
