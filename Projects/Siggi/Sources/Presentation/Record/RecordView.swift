@@ -13,8 +13,19 @@ public struct RecordView: View {
     
     public var body: some View {
         NavigationStack(path: $recordRouter.route) {
-            Text("RecordView!")
-            
+            HStack(spacing: 2) {
+                Image(.siggiIcon)
+                    .resizable()
+                    .frame(width: 30, height: 30)
+                Text("기록")
+                    .font(.title3)
+                Spacer()
+            }
+            .frame(height: 40)
+            .padding(.horizontal, 14)
+
+            Divider()
+
             Button(action: {
                 recordRouter.pushView(screen: RecordScreen.recordDetail(recordText: "recordTest"))
             }, label: {
