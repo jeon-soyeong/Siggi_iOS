@@ -105,7 +105,6 @@ struct RecordPlaceView: View {
                                 }
                             }
                     }
-                    .contentShape(Rectangle())
                     .onTapGesture {
                         isFocused = false
                     }
@@ -128,9 +127,9 @@ struct RecordPlaceView: View {
 
 struct PhotoView: View {
     @State private var selectedItems: [PhotosPickerItem] = []
+    @State var isRemove: Bool = false
     @Binding var selectedImages: [UIImage]
     @Binding var isLoading: Bool
-    @State var isRemove: Bool = false
 
     var body: some View {
         HStack {
