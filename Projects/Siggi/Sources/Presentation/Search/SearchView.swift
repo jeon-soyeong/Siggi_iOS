@@ -6,40 +6,43 @@
 //  Copyright © 2024 Siggi. All rights reserved.
 //
 
-import SwiftUI
-import MapKit
 import Common
+import MapKit
+import SwiftData
+import SwiftUI
 
 public struct SearchView: View {
     @Namespace var mapScope
-    @State private var locationManager = LocationManager()
-    @State private var position: MapCameraPosition = .automatic
-    @State private var isPositionUpdated = false
+    @State private var locationManager = LocationManager.shared
+    @State private var position: MapCameraPosition = .userLocation(fallback: .automatic)
     @Bindable var searchRouter: Router
-    
+    @Environment(\.modelContext) private var modelContext
+    @Query var placeRecords: [PlaceRecord]
+
     public var body: some View {
         NavigationStack(path: $searchRouter.route) {
             ZStack(alignment: .top) {
                 Map(position: $position, scope: mapScope) {
                     UserAnnotation()
+
+                    ForEach(placeRecords.indices, id: \.self) { index in
+                        let record = placeRecords[index]
+                        let coordinate = CLLocationCoordinate2D(latitude: record.latitude, longitude: record.longitude)
+                            Annotation(record.name, coordinate: coordinate) {
+                                Image(.mapPin)
+                                    .resizable()
+                                    .frame(width: 30, height: 34)
+                            }
+                    }
                 }
                 .mapControls {
                     MapCompass()
                         .mapControlVisibility(.hidden)
                 }
-                .task {
-                    try? await locationManager.startCurrentLocationUpdates()
+                .onChange(of: locationManager.region) { oldValue, newValue in
+                    position = .region(newValue)
                 }
-                .onMapCameraChange() { context in
-                    position = .region(context.region)
-                }
-                .onChange(of: locationManager.position) {
-                    if !isPositionUpdated {
-                        position = locationManager.position
-                        isPositionUpdated = true
-                    }
-                }
-                
+
                 VStack(alignment: .trailing) {
                     SearchBarView()
                     
@@ -50,6 +53,7 @@ public struct SearchView: View {
                     }
                 }
                 .padding(14)
+                .navigationBarBackButtonHidden()
             }
             .mapScope(mapScope)
             .navigationDestination(for: SearchScreen.self) { screen in

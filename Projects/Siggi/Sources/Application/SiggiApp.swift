@@ -6,6 +6,7 @@
 //  Copyright © 2024 Siggi. All rights reserved.
 //
 
+import SwiftData
 import SwiftUI
 
 @main
@@ -15,5 +16,6 @@ struct SiggiApp: App {
             ContentView()
                 .serviceDIContainer()
         }
+        .modelContainer(for: PlaceRecord.self)
     }
 }

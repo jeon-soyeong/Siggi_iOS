@@ -7,7 +7,7 @@
 
 import Foundation
 
-final public class APIService {
+public final class APIService {
     private var session: URLSessionProtocol
 
     init(session: URLSessionProtocol = URLSession.shared) {
