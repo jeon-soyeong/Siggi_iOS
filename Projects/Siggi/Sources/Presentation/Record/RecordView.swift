@@ -47,7 +47,7 @@ public struct RecordView: View {
                                     .padding(10)
                             }
                             .onTapGesture {
-                                recordRouter.pushView(screen: RecordScreen.recordDetail(recordText: record.name))
+                                recordRouter.pushView(screen: RecordScreen.recordDetail(placeRecord: record))
                             }
                         }
                     }
@@ -73,8 +73,8 @@ public struct RecordView: View {
             }
             .navigationDestination(for: RecordScreen.self) { screen in
                 switch screen {
-                case .recordDetail(let recordText):
-                    RecordDetailView(recordText: recordText)
+                case .recordDetail(let placeRecord):
+                    RecordDetailView(placeRecord: placeRecord)
                 }
             }
         }
@@ -83,14 +83,4 @@ public struct RecordView: View {
 
 #Preview {
     RecordView(recordRouter: Router())
-}
-
-//test
-struct RecordDetailView: View {
-    @Environment(Router.self) private var recordRouter: Router
-    var recordText: String = ""
-    
-    var body: some View {
-        Text(recordText)
-    }
 }
