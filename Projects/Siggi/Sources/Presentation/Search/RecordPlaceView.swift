@@ -159,7 +159,7 @@ struct PhotoView: View {
                             defer { isLoading = false }
 
                             selectedImages = []
-                            let targetSize = CGSize(width: 300, height: 300)
+                            let targetSize = CGSize(width: 500, height: 500)
                             for selectedItem in selectedItems {
                                 if let data = try? await selectedItem.loadTransferable(type: Data.self) {
                                     let downsampledImage = downsampleImage(at: data, to: targetSize, scale: 1)
