@@ -16,7 +16,6 @@ public struct SearchView: View {
     @State private var locationManager = LocationManager.shared
     @State private var position: MapCameraPosition = .userLocation(fallback: .automatic)
     @Bindable var searchRouter: Router
-    @Environment(\.modelContext) private var modelContext
     @Query var placeRecords: [PlaceRecord]
 
     public var body: some View {
