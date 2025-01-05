@@ -32,7 +32,7 @@ struct RecordDetailView: View {
                 }
                 .padding(30)
 
-                if let imageData = placeRecord.imageData {
+                if let imageData = placeRecord.imageData, imageData.count > 0 {
                     ScrollView(.horizontal) {
                         LazyHStack {
                             ForEach(imageData, id: \.self) { data in
