@@ -19,7 +19,7 @@ struct ContentView: View {
         switch appRootManager.currentRoot {
         case .splash:
             SplashView()
-        case .home:
+        case .search, .record:
             ZStack(alignment: .bottom) {
                 switch selectedTab {
                 case .search:
@@ -53,6 +53,14 @@ struct ContentView: View {
                     .accentColor(.red)
                     .onAppear {
                         UITabBar.appearance().unselectedItemTintColor = .darkGray
+                    }
+                    .onChange(of: selectedTab) { oldValue, newValue in
+                        switch newValue {
+                        case .search:
+                            searchRouter.popToRootView()
+                        case .record:
+                            recordRouter.popToRootView()
+                        }
                     }
                 }
             }

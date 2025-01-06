@@ -11,7 +11,7 @@ import SwiftUI
 
 public struct RecordView: View {
     @Bindable var recordRouter: Router
-    @Query(sort: \PlaceRecord.date, order: .reverse)  var placeRecords: [PlaceRecord]
+    @Query(sort: \PlaceRecord.date, order: .reverse) var placeRecords: [PlaceRecord]
     private let tabBarHeight: CGFloat = 85
     let columns = [GridItem(.flexible(minimum: 160, maximum: 200), spacing: 10),
                    GridItem(.flexible(minimum: 160, maximum: 200), spacing: 10)]
