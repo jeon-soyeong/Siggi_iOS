@@ -20,6 +20,7 @@ struct RecordPlaceView: View {
     @State private var isRegister: Bool = false
     @FocusState private var isFocused: Bool
     private let maximumRating: Int = 5
+    private let tabBarHeight: CGFloat = 85
     var place: Document?
 
     var body: some View {
@@ -75,7 +76,7 @@ struct RecordPlaceView: View {
                         Image(.save)
                             .resizable()
                             .aspectRatio(contentMode: .fit)
-                            .padding(EdgeInsets(top: 30, leading: 18, bottom: 0, trailing: 18))
+                            .padding(EdgeInsets(top: 30, leading: 18, bottom: tabBarHeight, trailing: 18))
                             .onTapGesture {
                                 isRegister = true
 
