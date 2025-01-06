@@ -19,6 +19,23 @@ public struct RecordView: View {
     public var body: some View {
         NavigationStack(path: $recordRouter.route) {
             ZStack(alignment: .top) {
+                VStack {
+                    HStack(spacing: 2) {
+                        Image(.siggiIcon)
+                            .resizable()
+                            .frame(width: 30, height: 30)
+                        Text("기록")
+                            .font(.title3)
+                        Spacer()
+                    }
+                    .frame(height: 40)
+                    .padding(.horizontal, 14)
+
+                    Divider()
+                }
+                .background(.white)
+                .zIndex(1)
+
                 ScrollView {
                     LazyVGrid(columns: columns, spacing: 10) {
                         ForEach(placeRecords, id: \.self) { record in
@@ -54,22 +71,6 @@ public struct RecordView: View {
                     .padding(.horizontal, 10)
                 }
                 .safeAreaPadding(EdgeInsets(top: 60, leading: 0, bottom: tabBarHeight, trailing: 0))
-
-                VStack {
-                    HStack(spacing: 2) {
-                        Image(.siggiIcon)
-                            .resizable()
-                            .frame(width: 30, height: 30)
-                        Text("기록")
-                            .font(.title3)
-                        Spacer()
-                    }
-                    .frame(height: 40)
-                    .padding(.horizontal, 14)
-
-                    Divider()
-                }
-                .background(.white)
             }
             .navigationDestination(for: RecordScreen.self) { screen in
                 switch screen {
