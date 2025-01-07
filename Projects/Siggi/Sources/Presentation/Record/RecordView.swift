@@ -70,6 +70,7 @@ public struct RecordView: View {
                     }
                     .padding(.horizontal, 10)
                 }
+                .scrollIndicators(.hidden)
                 .safeAreaPadding(EdgeInsets(top: 60, leading: 0, bottom: tabBarHeight, trailing: 0))
             }
             .navigationDestination(for: RecordScreen.self) { screen in
