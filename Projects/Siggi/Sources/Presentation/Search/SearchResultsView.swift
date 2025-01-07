@@ -23,7 +23,7 @@ public struct SearchResultsView: View {
     public var body: some View {
         NavigationBar(title: searchText,
                       backButtonAction: searchRouter.popView,
-                      rightButtonAction: searchRouter.popView)
+                      rightButtonAction: searchRouter.popToRootView)
         Divider()
 
         ZStack {

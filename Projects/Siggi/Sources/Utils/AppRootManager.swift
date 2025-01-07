@@ -13,6 +13,7 @@ import SwiftUI
     
     enum AppRoots {
         case splash
-        case home
+        case search
+        case record
     }
 }

@@ -8,5 +8,5 @@
 import Foundation
 
 public enum RecordScreen: Hashable {
-    case recordDetail(recordText: String)
+    case recordDetail(placeRecord: PlaceRecord)
 }

@@ -20,6 +20,7 @@ struct RecordPlaceView: View {
     @State private var isRegister: Bool = false
     @FocusState private var isFocused: Bool
     private let maximumRating: Int = 5
+    private let tabBarHeight: CGFloat = 85
     var place: Document?
 
     var body: some View {
@@ -75,7 +76,7 @@ struct RecordPlaceView: View {
                         Image(.save)
                             .resizable()
                             .aspectRatio(contentMode: .fit)
-                            .padding(EdgeInsets(top: 30, leading: 18, bottom: 0, trailing: 18))
+                            .padding(EdgeInsets(top: 30, leading: 18, bottom: tabBarHeight, trailing: 18))
                             .onTapGesture {
                                 isRegister = true
 
@@ -159,7 +160,7 @@ struct PhotoView: View {
                             defer { isLoading = false }
 
                             selectedImages = []
-                            let targetSize = CGSize(width: 300, height: 300)
+                            let targetSize = CGSize(width: 500, height: 500)
                             for selectedItem in selectedItems {
                                 if let data = try? await selectedItem.loadTransferable(type: Data.self) {
                                     let downsampledImage = downsampleImage(at: data, to: targetSize, scale: 1)
@@ -219,36 +220,5 @@ struct PhotoView: View {
         }
 
         return downsampleImage
-    }
-}
-
-struct PopUpView: View {
-    var imageName: String
-    var message: String
-
-    var body: some View {
-        ZStack {
-            Color.black.opacity(0.5)
-                .edgesIgnoringSafeArea(.all)
-
-            RoundedRectangle(cornerRadius: 15)
-                .fill(Color.white)
-                .stroke(Color(.lightGray), lineWidth: 2)
-                .shadow(radius: 10)
-                .frame(width: 330, height: 380)
-
-            VStack {
-                Image(imageName)
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 130, height: 130)
-                    .padding()
-
-                Text(message)
-                    .font(.headline)
-                    .multilineTextAlignment(.center)
-                    .padding()
-            }
-        }
     }
 }
