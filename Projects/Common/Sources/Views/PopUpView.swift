@@ -8,15 +8,27 @@
 import SwiftUI
 
 public struct PopUpView: View {
-    var imageName: String
-    var message: String
+    private var imageName: String
+    private var message: String
+    private var leftButtonAction: (() -> Void)?
+    private var rightButtonAction: (() -> Void)?
+    private var leftButtonImageName: String?
+    private var rightButtonImageName: String?
 
     public init(
         imageName: String,
-        message: String
+        message: String,
+        leftButtonAction: (() -> Void)? = nil,
+        rightButtonAction: (() -> Void)? = nil,
+        leftButtonImageName: String? = nil,
+        rightButtonImageName: String? = nil
     ) {
         self.imageName = imageName
         self.message = message
+        self.leftButtonAction = leftButtonAction
+        self.rightButtonAction = rightButtonAction
+        self.leftButtonImageName = leftButtonImageName
+        self.rightButtonImageName = rightButtonImageName
     }
 
     public var body: some View {
@@ -41,6 +53,31 @@ public struct PopUpView: View {
                     .font(.headline)
                     .multilineTextAlignment(.center)
                     .padding()
+
+                HStack {
+                    if let leftAction = leftButtonAction,
+                       let leftImageName = leftButtonImageName {
+                        Button(action: {
+                            leftAction()
+                        }, label: {
+                            Image(leftImageName)
+                                .resizable()
+                                .frame(width: 130, height: 45)
+                        })
+                    }
+
+                    if let rightAction = rightButtonAction,
+                       let rightImageName = rightButtonImageName {
+                        Button(action: {
+                            rightAction()
+                        }, label: {
+                            Image(rightImageName)
+                                .resizable()
+                                .frame(width: 130, height: 45)
+                        })
+                    }
+                }
+                .padding()
             }
         }
     }
