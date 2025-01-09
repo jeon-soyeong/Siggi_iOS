@@ -15,6 +15,8 @@ public struct SearchView: View {
     @Namespace var mapScope
     @State private var locationManager = LocationManager.shared
     @State private var position: MapCameraPosition = .userLocation(fallback: .automatic)
+    @State private var selectedRecord: PlaceRecord?
+    @State private var showModal: Bool = false
     @Bindable var searchRouter: Router
     @Query var placeRecords: [PlaceRecord]
 
@@ -31,8 +33,16 @@ public struct SearchView: View {
                                 Image(.mapPin)
                                     .resizable()
                                     .frame(width: 30, height: 34)
+                                    .onTapGesture {
+                                        selectedRecord = record
+                                        showModal = true
+                                    }
                             }
                     }
+                }
+                .sheet(isPresented: $showModal) {
+                    PlaceRecordsView(record: $selectedRecord)
+                        .presentationDetents([.medium, .fraction(0.9)])
                 }
                 .mapControls {
                     MapCompass()
