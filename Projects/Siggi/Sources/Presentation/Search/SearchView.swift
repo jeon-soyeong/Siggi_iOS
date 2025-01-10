@@ -15,7 +15,7 @@ public struct SearchView: View {
     @Namespace var mapScope
     @State private var locationManager = LocationManager.shared
     @State private var position: MapCameraPosition = .userLocation(fallback: .automatic)
-    @State private var selectedRecord: PlaceRecord?
+    @State private var selectedRecord: [PlaceRecord]?
     @State private var showModal: Bool = false
     @Bindable var searchRouter: Router
     @Query var placeRecords: [PlaceRecord]
@@ -26,18 +26,21 @@ public struct SearchView: View {
                 Map(position: $position, scope: mapScope) {
                     UserAnnotation()
 
-                    ForEach(placeRecords.indices, id: \.self) { index in
-                        let record = placeRecords[index]
-                        let coordinate = CLLocationCoordinate2D(latitude: record.latitude, longitude: record.longitude)
+                    let placeRecordsDictionary = Dictionary(grouping: placeRecords, by: { $0.name })
+
+                    ForEach(placeRecordsDictionary.sorted(by: { $0.key < $1.key }), id: \.key) { key, value in
+                        if let record = value.first {
+                            let coordinate = CLLocationCoordinate2D(latitude: record.latitude, longitude: record.longitude)
                             Annotation(record.name, coordinate: coordinate) {
                                 Image(.mapPin)
                                     .resizable()
                                     .frame(width: 30, height: 34)
                                     .onTapGesture {
-                                        selectedRecord = record
+                                        selectedRecord = value
                                         showModal = true
                                     }
                             }
+                        }
                     }
                 }
                 .sheet(isPresented: $showModal) {
