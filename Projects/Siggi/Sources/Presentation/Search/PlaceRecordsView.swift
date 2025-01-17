@@ -32,6 +32,7 @@ struct PlaceRecordsView: View {
                             .lineLimit(1)
                             .truncationMode(.tail)
                             .padding(.top, 30)
+                            .padding(.leading)
 
                         Divider()
                     }
@@ -91,7 +92,7 @@ struct PlaceRecordsView: View {
                                     .frame(maxWidth: .infinity, alignment: .leading)
                             }
                         }
-                        .padding(.vertical)
+                        .padding()
 
                         Divider()
                     }
@@ -123,6 +124,5 @@ struct PlaceRecordsView: View {
                 }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
-            .padding()
     }
 }
