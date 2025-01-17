@@ -15,10 +15,10 @@ public struct SearchView: View {
     @Namespace var mapScope
     @State private var locationManager = LocationManager.shared
     @State private var position: MapCameraPosition = .userLocation(fallback: .automatic)
-    @State private var selectedRecord: [PlaceRecord]?
+    @State private var placeName: String?
     @State private var showModal: Bool = false
     @Bindable var searchRouter: Router
-    @Query var placeRecords: [PlaceRecord]
+    @Query(sort: \PlaceRecord.date, order: .reverse) var placeRecords: [PlaceRecord]
 
     public var body: some View {
         NavigationStack(path: $searchRouter.route) {
@@ -26,25 +26,21 @@ public struct SearchView: View {
                 Map(position: $position, scope: mapScope) {
                     UserAnnotation()
 
-                    let placeRecordsDictionary = Dictionary(grouping: placeRecords, by: { $0.name })
-
-                    ForEach(placeRecordsDictionary.sorted(by: { $0.key < $1.key }), id: \.key) { key, value in
-                        if let record = value.first {
-                            let coordinate = CLLocationCoordinate2D(latitude: record.latitude, longitude: record.longitude)
-                            Annotation(record.name, coordinate: coordinate) {
-                                Image(.mapPin)
-                                    .resizable()
-                                    .frame(width: 30, height: 34)
-                                    .onTapGesture {
-                                        selectedRecord = value
-                                        showModal = true
-                                    }
-                            }
+                    ForEach(placeRecords, id: \.self) { record in
+                        let coordinate = CLLocationCoordinate2D(latitude: record.latitude, longitude: record.longitude)
+                        Annotation(record.name, coordinate: coordinate) {
+                            Image(.mapPin)
+                                .resizable()
+                                .frame(width: 30, height: 34)
+                                .onTapGesture {
+                                    placeName = record.name
+                                    showModal = true
+                                }
                         }
                     }
                 }
                 .sheet(isPresented: $showModal) {
-                    PlaceRecordsView(record: $selectedRecord)
+                    PlaceRecordsView(placeName: $placeName)
                         .presentationDetents([.medium, .fraction(0.9)])
                 }
                 .mapControls {
