@@ -98,6 +98,7 @@ struct RecordDetailView: View {
                               leftButtonImageName: "yes",
                               rightButtonImageName: "no"
                     )
+                    .zIndex(2)
                 }
             }
         }
