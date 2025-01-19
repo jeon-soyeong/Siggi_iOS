@@ -18,15 +18,19 @@ struct RecordDetailView: View {
     var placeRecord: PlaceRecord?
 
     var body: some View {
-        ZStack {
+        ZStack(alignment: .top) {
             if let placeRecord = placeRecord {
                 VStack {
                     NavigationBar(title: placeRecord.name,
                                   backButtonAction: { recordRouter.popView() },
                                   rightButtonAction: { recordRouter.popToRootView() })
                     Divider()
+                }
+                .background(.white)
+                .zIndex(1)
 
-                    ScrollView {
+                ScrollView {
+                    VStack {
                         HStack {
                             ForEach(1...maximumRating, id: \.self) { count in
                                 Image(systemName: count > placeRecord.rating ? "star" : "star.fill")
@@ -75,10 +79,10 @@ struct RecordDetailView: View {
                                 isDelete = true
                             }
                     }
-                    .safeAreaPadding(EdgeInsets(top: 0, leading: 0, bottom: tabBarHeight, trailing: 0))
-                    .scrollIndicators(.hidden)
-                    .navigationBarBackButtonHidden()
                 }
+                .safeAreaPadding(EdgeInsets(top: 60, leading: 0, bottom: tabBarHeight, trailing: 0))
+                .scrollIndicators(.hidden)
+                .navigationBarBackButtonHidden()
 
                 if isDelete {
                     PopUpView(imageName: "delete",
@@ -94,6 +98,7 @@ struct RecordDetailView: View {
                               leftButtonImageName: "yes",
                               rightButtonImageName: "no"
                     )
+                    .zIndex(2)
                 }
             }
         }

@@ -8,20 +8,24 @@
 import SwiftUI
 
 public struct PopUpView: View {
-    private var imageName: String
+    private var imageName: String?
     private var message: String
     private var leftButtonAction: (() -> Void)?
     private var rightButtonAction: (() -> Void)?
     private var leftButtonImageName: String?
     private var rightButtonImageName: String?
+    private var width: CGFloat?
+    private var height: CGFloat?
 
     public init(
-        imageName: String,
+        imageName: String? = nil,
         message: String,
         leftButtonAction: (() -> Void)? = nil,
         rightButtonAction: (() -> Void)? = nil,
         leftButtonImageName: String? = nil,
-        rightButtonImageName: String? = nil
+        rightButtonImageName: String? = nil,
+        width: CGFloat? = 330,
+        height: CGFloat? = 380
     ) {
         self.imageName = imageName
         self.message = message
@@ -29,6 +33,8 @@ public struct PopUpView: View {
         self.rightButtonAction = rightButtonAction
         self.leftButtonImageName = leftButtonImageName
         self.rightButtonImageName = rightButtonImageName
+        self.width = width
+        self.height = height
     }
 
     public var body: some View {
@@ -40,14 +46,16 @@ public struct PopUpView: View {
                 .fill(Color.white)
                 .stroke(Color(.lightGray), lineWidth: 2)
                 .shadow(radius: 10)
-                .frame(width: 330, height: 380)
+                .frame(width: width, height: height)
 
             VStack {
-                Image(imageName)
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 130, height: 130)
-                    .padding()
+                if let imageName = imageName {
+                    Image(imageName)
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 130, height: 130)
+                        .padding()
+                }
 
                 Text(message)
                     .font(.headline)
