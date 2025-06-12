@@ -30,9 +30,17 @@ import SwiftUI
 
     public func transform(type: Action) {
         Task {
-            switch type {
-            case .fetchSearchPlace(let searchText):
-                try await fetchSearchPlaceResults(searchText: searchText)
+            do {
+                switch type {
+                case .fetchSearchPlace(let searchText):
+                    try await fetchSearchPlaceResults(searchText: searchText)
+                }
+            } catch {
+                if let error = error as? APIError {
+                     print(error.description)
+                 } else {
+                     print(error.localizedDescription)
+                 }
             }
         }
     }
