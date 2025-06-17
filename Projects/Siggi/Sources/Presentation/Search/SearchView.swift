@@ -17,7 +17,7 @@ public struct SearchView: View {
     @State private var clusterManager = ClusterManager()
     @State private var position: MapCameraPosition = .userLocation(fallback: .automatic)
     @State private var placeNames: [String]?
-    @State private var showModal: Bool = false
+    @State private var isPresented: Bool = false
     @Bindable var searchRouter: Router
     @Query(sort: \PlaceRecord.date, order: .reverse) var placeRecords: [PlaceRecord]
     @State private var mapViewSize: CGSize = .zero
@@ -37,7 +37,7 @@ public struct SearchView: View {
                                     .frame(width: 30, height: 34)
                                     .onTapGesture {
                                         placeNames = annotation.titles
-                                        showModal = true
+                                        isPresented = true
                                     }
                             }
                         }
@@ -52,7 +52,7 @@ public struct SearchView: View {
                 .onReadSize {
                     mapViewSize = $0
                 }
-                .sheet(isPresented: $showModal) {
+                .sheet(isPresented: $isPresented) {
                     PlaceRecordsView(placeNames: $placeNames)
                         .presentationDetents([.medium, .fraction(0.9)])
                 }

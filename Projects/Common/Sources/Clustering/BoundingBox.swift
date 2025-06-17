@@ -15,10 +15,10 @@ struct BoundingBox {
     var maxLongitude: CGFloat
 
     init(minLatitude: CGFloat, maxLatitude: CGFloat, minLongitude: CGFloat, maxLongitude: CGFloat) {
-            self.minLatitude = minLatitude
-            self.maxLatitude = maxLatitude
-            self.minLongitude = minLongitude
-            self.maxLongitude = maxLongitude
+        self.minLatitude = minLatitude
+        self.maxLatitude = maxLatitude
+        self.minLongitude = minLongitude
+        self.maxLongitude = maxLongitude
     }
 
     init(mapRect: MKMapRect) {
