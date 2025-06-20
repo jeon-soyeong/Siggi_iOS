@@ -12,9 +12,9 @@ import SwiftUI
 struct PlaceRecordsView: View {
     @Query(sort: \PlaceRecord.date, order: .reverse) var placeRecords: [PlaceRecord]
     @Binding var placeNames: [String]?
+    @Environment(\.modelContext) private var modelContext
     @State private var isDelete: Bool = false
     @State private var recordToDelete: PlaceRecord?
-    @Environment(\.modelContext) private var modelContext
     private let maximumRating: Int = 5
     private let dateFormatter: DateFormatter = {
         let formatter = DateFormatter()

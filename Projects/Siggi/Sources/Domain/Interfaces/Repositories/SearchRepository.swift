@@ -7,6 +7,6 @@
 
 import Foundation
 
-public protocol SearchRepository {
+protocol SearchRepository {
     func fetchSearchPlaceResults(searchText: String, page: Int, size: Int) async throws -> SearchPlaces
 }

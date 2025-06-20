@@ -8,7 +8,7 @@
 import Foundation
 
 extension URLRequest {
-    init?(type: EndPointType) {
+    public init?(type: EndPointType) {
         var components = URLComponents(string: type.baseURL)
         components?.path = type.path
         components?.queryItems = type.query

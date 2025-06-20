@@ -9,12 +9,12 @@ import SwiftUI
 import Common
 import MapKit
 
-public struct SelectedPlaceView: View {
+struct SelectedPlaceView: View {
     @Environment(Router.self) private var searchRouter
-    var place: Document?
     private let tabBarHeight: CGFloat = 85
+    var place: Document?
 
-    public var body: some View {
+    var body: some View {
         if let place = place {
             NavigationBar(title: place.placeName,
                           backButtonAction: searchRouter.popView,

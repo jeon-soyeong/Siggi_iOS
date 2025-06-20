@@ -9,9 +9,9 @@ import MapKit
 import SwiftUI
 
 @Observable public final class LocationManager: NSObject, CLLocationManagerDelegate {
-    static let shared = LocationManager()
-    var locationManager: CLLocationManager = CLLocationManager()
-    var region: MKCoordinateRegion = MKCoordinateRegion()
+    public static let shared = LocationManager()
+    public var region: MKCoordinateRegion = MKCoordinateRegion()
+    private var locationManager: CLLocationManager = CLLocationManager()
 
     override init() {
         super.init()

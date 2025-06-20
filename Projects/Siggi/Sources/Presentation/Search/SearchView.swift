@@ -11,7 +11,7 @@ import MapKit
 import SwiftData
 import SwiftUI
 
-public struct SearchView: View {
+struct SearchView: View {
     @Namespace var mapScope
     @State private var locationManager = LocationManager.shared
     @State private var clusterManager = ClusterManager()
@@ -22,7 +22,7 @@ public struct SearchView: View {
     @Query(sort: \PlaceRecord.date, order: .reverse) var placeRecords: [PlaceRecord]
     @State private var mapViewSize: CGSize = .zero
 
-    public var body: some View {
+    var body: some View {
         NavigationStack(path: $searchRouter.route) {
             ZStack(alignment: .top) {
                 Map(position: $position, scope: mapScope) {

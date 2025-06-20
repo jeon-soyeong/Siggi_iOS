@@ -9,14 +9,14 @@ import Common
 import SwiftData
 import SwiftUI
 
-public struct RecordView: View {
+struct RecordView: View {
     @Bindable var recordRouter: Router
     @Query(sort: \PlaceRecord.date, order: .reverse) var placeRecords: [PlaceRecord]
     private let tabBarHeight: CGFloat = 85
-    let columns = [GridItem(.flexible(minimum: 160, maximum: 200), spacing: 10),
+    private let columns = [GridItem(.flexible(minimum: 160, maximum: 200), spacing: 10),
                    GridItem(.flexible(minimum: 160, maximum: 200), spacing: 10)]
 
-    public var body: some View {
+    var body: some View {
         NavigationStack(path: $recordRouter.route) {
             ZStack(alignment: .top) {
                 VStack {

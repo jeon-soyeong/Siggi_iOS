@@ -9,7 +9,7 @@
 import SwiftUI
 import Common
 
-public struct DIContainerModifier: ViewModifier {
+struct DIContainerModifier: ViewModifier {
     @State private var appRootManager = AppRootManager()
     @Bindable var searchRouter = Router()
     @Bindable var recordRouter = Router()

@@ -6,15 +6,16 @@
 //
 
 import Foundation
+import Common
 
-public final class APIService {
+final class APIService {
     private var session: URLSessionProtocol
 
     init(session: URLSessionProtocol = URLSession.shared) {
         self.session = session
     }
 
-    public func request<T: Codable>(with url: URLRequest) async throws -> T {
+    func request<T: Codable>(with url: URLRequest) async throws -> T {
         let (data, response) = try await self.session.getData(for: url)
 
         guard let statusCode = (response as? HTTPURLResponse)?.statusCode, statusCode == 200 else {
