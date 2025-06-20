@@ -10,9 +10,11 @@
 <img src="https://github.com/user-attachments/assets/da0c57a3-aef4-48f5-b744-0c51f1a0411f" width="250" />
 <br/><br/>
 
-### 기록 상세 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;기록 삭제하기
+### 기록 상세 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;기록 삭제하기&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;지도 클러스터링
+
 <img src="https://github.com/user-attachments/assets/86a67439-3c99-43bd-b267-da14e91a6caf" width="250" />&nbsp;&nbsp;&nbsp;
-<img src="https://github.com/user-attachments/assets/3b8537e2-ab2f-4add-9e58-ef32198e034d" width="250" />
+<img src="https://github.com/user-attachments/assets/3b8537e2-ab2f-4add-9e58-ef32198e034d" width="250" />&nbsp;&nbsp;&nbsp;
+<img src="https://github.com/user-attachments/assets/06cece55-f0fd-47e9-9889-970271c86296" width="250" />
 <br/>
 
 ## [Reference]
