@@ -7,6 +7,6 @@
 
 import Foundation
 
-public enum RecordScreen: Hashable {
+enum RecordScreen: Hashable {
     case recordDetail(placeRecord: PlaceRecord)
 }

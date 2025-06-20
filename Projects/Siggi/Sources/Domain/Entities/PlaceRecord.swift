@@ -9,7 +9,7 @@ import Foundation
 import SwiftData
 
 @Model
-public final class PlaceRecord {
+final class PlaceRecord {
     var name: String
     var date: Date
     var latitude: Double

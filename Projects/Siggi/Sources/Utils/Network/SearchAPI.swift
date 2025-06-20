@@ -6,29 +6,30 @@
 //
 
 import Foundation
+import Common
 
-public enum SearchAPI: EndPointType {
+enum SearchAPI: EndPointType {
     case searchPlace(query: String, page: Int, size: Int)
 
-    public var httpMethod: HTTPMethod {
+    var httpMethod: HTTPMethod {
         switch self {
         case .searchPlace:
             return .get
         }
     }
 
-    public var baseURL: String {
+    var baseURL: String {
         return APIConstants.baseURL
     }
 
-    public var path: String {
+    var path: String {
         switch self {
         case .searchPlace:
             return "/v2/local/search/keyword"
         }
     }
 
-    public var query: [URLQueryItem]? {
+    var query: [URLQueryItem]? {
         switch self {
         case .searchPlace(let query, let page, let size):
             return [URLQueryItem(name: "query", value: "\(query)"),
@@ -38,7 +39,7 @@ public enum SearchAPI: EndPointType {
         }
     }
 
-    public var headers: [String: String]? {
+    var headers: [String: String]? {
         switch self {
         case .searchPlace:
             return ["Authorization": "KakaoAK \(APIConstants.restAPIKey)"]

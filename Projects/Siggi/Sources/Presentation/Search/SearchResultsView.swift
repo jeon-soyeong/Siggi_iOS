@@ -8,7 +8,7 @@
 import SwiftUI
 import Common
 
-public struct SearchResultsView: View {
+struct SearchResultsView: View {
     @Environment(Router.self) private var searchRouter
     @State private var searchViewModel = SearchViewModel(
         searchUseCase: DefaultSearchUseCase(
@@ -20,7 +20,7 @@ public struct SearchResultsView: View {
     private let tabBarHeight: CGFloat = 85
     var searchText: String = ""
 
-    public var body: some View {
+    var body: some View {
         NavigationBar(title: searchText,
                       backButtonAction: searchRouter.popView,
                       rightButtonAction: searchRouter.popToRootView)

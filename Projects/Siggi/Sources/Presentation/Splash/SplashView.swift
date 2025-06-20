@@ -8,10 +8,10 @@
 
 import SwiftUI
 
-public struct SplashView: View {
+struct SplashView: View {
     @Environment(AppRootManager.self) private var appRootManager
 
-    public var body: some View {
+    var body: some View {
         Image(.siggiIcon)
             .resizable()
             .frame(width: 90, height: 90)

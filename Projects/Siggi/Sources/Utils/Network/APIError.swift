@@ -7,12 +7,12 @@
 
 import Foundation
 
-public enum APIError: Error {
+enum APIError: Error {
     case failedData
     case failedDecode
     case failedRequest
 
-    public var description: String {
+    var description: String {
         switch self {
         case .failedRequest:
             return "데이터 요청 실패입니다."

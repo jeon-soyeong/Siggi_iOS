@@ -7,7 +7,7 @@
 
 import Foundation
 
-public enum SearchScreen: Hashable {
+enum SearchScreen: Hashable {
     case searchResults(searchText: String)
     case selectedPlace(place: Document)
     case recordPlace(place: Document)

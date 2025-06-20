@@ -11,36 +11,49 @@ import MapKit
 import SwiftData
 import SwiftUI
 
-public struct SearchView: View {
+struct SearchView: View {
     @Namespace var mapScope
     @State private var locationManager = LocationManager.shared
+    @State private var clusterManager = ClusterManager()
     @State private var position: MapCameraPosition = .userLocation(fallback: .automatic)
-    @State private var placeName: String?
-    @State private var showModal: Bool = false
+    @State private var placeNames: [String]?
+    @State private var isPresented: Bool = false
     @Bindable var searchRouter: Router
     @Query(sort: \PlaceRecord.date, order: .reverse) var placeRecords: [PlaceRecord]
+    @State private var mapViewSize: CGSize = .zero
 
-    public var body: some View {
+    var body: some View {
         NavigationStack(path: $searchRouter.route) {
             ZStack(alignment: .top) {
                 Map(position: $position, scope: mapScope) {
                     UserAnnotation()
 
-                    ForEach(placeRecords, id: \.self) { record in
-                        let coordinate = CLLocationCoordinate2D(latitude: record.latitude, longitude: record.longitude)
-                        Annotation(record.name, coordinate: coordinate) {
-                            Image(.mapPin)
-                                .resizable()
-                                .frame(width: 30, height: 34)
-                                .onTapGesture {
-                                    placeName = record.name
-                                    showModal = true
-                                }
+                    ForEach(clusterManager.clusterAnnotations.indices, id: \.self) { index in
+                        let annotation = clusterManager.clusterAnnotations[index]
+                        if let title = annotation.title {
+                            Annotation(title, coordinate: annotation.coordinate) {
+                                Image(.mapPin)
+                                    .resizable()
+                                    .frame(width: 30, height: 34)
+                                    .onTapGesture {
+                                        placeNames = annotation.titles
+                                        isPresented = true
+                                    }
+                            }
                         }
                     }
                 }
-                .sheet(isPresented: $showModal) {
-                    PlaceRecordsView(placeName: $placeName)
+                .onAppear {
+                    let annotations = placeRecords.map { record in
+                        SiggiAnnotation(coordinate: CLLocationCoordinate2D(latitude: record.latitude, longitude: record.longitude), title: record.name, titles: [])
+                    }
+                    clusterManager.addAnnotations(annotations: annotations)
+                }
+                .onReadSize {
+                    mapViewSize = $0
+                }
+                .sheet(isPresented: $isPresented) {
+                    PlaceRecordsView(placeNames: $placeNames)
                         .presentationDetents([.medium, .fraction(0.9)])
                 }
                 .mapControls {
@@ -50,10 +63,16 @@ public struct SearchView: View {
                 .onChange(of: locationManager.region) { oldValue, newValue in
                     position = .region(newValue)
                 }
+                .onMapCameraChange { context in
+                    let visibleMapRect = context.rect
+                    let visibleMapRectWidth = visibleMapRect.size.width
+                    let zoomScale = mapViewSize.width > 0 ? Double(mapViewSize.width / visibleMapRectWidth) : 1.0
+                    clusterManager.clusterAnnotations(visibleMapRect: visibleMapRect, zoomScale: zoomScale)
+                }
 
                 VStack(alignment: .trailing) {
                     SearchBarView()
-                    
+
                     VStack {
                         MapUserLocationButton(scope: mapScope)
                             .buttonBorderShape(.circle)

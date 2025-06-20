@@ -8,11 +8,11 @@
 import SwiftUI
 import Common
 
-public struct SearchBarView: View {
+struct SearchBarView: View {
     @Environment(Router.self) private var searchRouter
     @State private var searchText: String = ""
 
-    public var body: some View {
+    var body: some View {
         ZStack {
             RoundedRectangle(cornerRadius: 12)
                 .frame(height: 45)

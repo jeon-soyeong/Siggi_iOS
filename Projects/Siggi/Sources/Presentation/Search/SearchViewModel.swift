@@ -6,16 +6,17 @@
 //
 
 import SwiftUI
+import Common
 
-@Observable public final class SearchViewModel: ViewModelType {
-    public var state: State
+@Observable final class SearchViewModel: ViewModelType {
+    var state: State
     private let searchUseCase: SearchUseCase
 
-    public enum Action {
+    enum Action {
         case fetchSearchPlace(searchText: String)
     }
 
-    public struct State {
+    struct State {
         let perPage = 15
         var currentPage = 1
         var searchPlaceResults: [Document]
@@ -23,21 +24,29 @@ import SwiftUI
         var isLoading = false
     }
 
-    public init(searchUseCase: SearchUseCase) {
+    init(searchUseCase: SearchUseCase) {
         self.state = State(searchPlaceResults: [])
         self.searchUseCase = searchUseCase
     }
 
-    public func transform(type: Action) {
+    func transform(type: Action) {
         Task {
-            switch type {
-            case .fetchSearchPlace(let searchText):
-                try await fetchSearchPlaceResults(searchText: searchText)
+            do {
+                switch type {
+                case .fetchSearchPlace(let searchText):
+                    try await fetchSearchPlaceResults(searchText: searchText)
+                }
+            } catch {
+                if let error = error as? APIError {
+                     print(error.description)
+                 } else {
+                     print(error.localizedDescription)
+                 }
             }
         }
     }
 
-    public func fetchSearchPlaceResults(searchText: String) async throws {
+    func fetchSearchPlaceResults(searchText: String) async throws {
         guard state.isEnd == false else { return }
         state.isLoading = true
         let searchPlace = try await searchUseCase.execute(searchText: searchText, page: state.currentPage, size: state.perPage)

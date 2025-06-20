@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct APIConstants {
+struct APIConstants {
     static let baseURL = "https://dapi.kakao.com"
 
     static var restAPIKey: String {

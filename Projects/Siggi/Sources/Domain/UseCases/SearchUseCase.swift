@@ -7,18 +7,18 @@
 
 import Foundation
 
-public protocol SearchUseCase {
+protocol SearchUseCase {
     func execute(searchText: String, page: Int, size: Int) async throws -> SearchPlaces
 }
 
-public final class DefaultSearchUseCase: SearchUseCase {
+final class DefaultSearchUseCase: SearchUseCase {
     private let searchRepository: SearchRepository
 
-    public init(searchRepository: SearchRepository) {
+    init(searchRepository: SearchRepository) {
         self.searchRepository = searchRepository
     }
 
-    public func execute(searchText: String, page: Int, size: Int) async throws -> SearchPlaces {
+    func execute(searchText: String, page: Int, size: Int) async throws -> SearchPlaces {
         return try await searchRepository.fetchSearchPlaceResults(searchText: searchText, page: page, size: size)
     }
 }

@@ -9,7 +9,7 @@
 import SwiftUI
 
 extension View {
-    public func serviceDIContainer() -> some View {
+    func serviceDIContainer() -> some View {
         modifier(DIContainerModifier())
     }
 }
