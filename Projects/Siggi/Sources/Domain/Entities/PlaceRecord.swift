@@ -10,6 +10,7 @@ import SwiftData
 
 @Model
 final class PlaceRecord {
+    let id = UUID()
     var name: String
     var date: Date
     var latitude: Double
