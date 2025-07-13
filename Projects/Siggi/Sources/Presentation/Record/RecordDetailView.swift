@@ -44,15 +44,10 @@ struct RecordDetailView: View {
                         if let imageData = placeRecord.imageData, imageData.count > 0 {
                             ScrollView(.horizontal) {
                                 LazyHStack {
-                                    ForEach(imageData, id: \.self) { data in
-                                        if let recordImage = UIImage(data: data) {
-                                            Image(uiImage: recordImage)
-                                                .resizable()
-                                                .scaledToFill()
-                                                .frame(width: 150, height: 200)
-                                                .cornerRadius(15)
-                                                .clipped()
-                                        }
+                                    ForEach(imageData.indices, id: \.self) { index in
+                                        let data = imageData[index]
+                                        let imageCacheKey = "\(placeRecord.id.uuidString)_\(index)"
+                                        DetailImageView(imageData: data, cacheKey: imageCacheKey)
                                     }
                                 }
                             }
@@ -107,4 +102,19 @@ struct RecordDetailView: View {
 
 #Preview {
     RecordDetailView()
+}
+
+struct DetailImageView: View {
+    let imageData: Data
+    let cacheKey: String
+
+    var body: some View {
+        AsyncCachedImageView(
+            imageData: imageData,
+            cacheKey: cacheKey,
+            cornerRadius: 15,
+            defaultImage: (type: .asset("siggiIcon"), width: 130, height: 130)
+        )
+        .frame(width: 150, height: 200)
+    }
 }

@@ -14,7 +14,7 @@ struct RecordView: View {
     @Query(sort: \PlaceRecord.date, order: .reverse) var placeRecords: [PlaceRecord]
     private let tabBarHeight: CGFloat = 85
     private let columns = [GridItem(.flexible(minimum: 160, maximum: 200), spacing: 10),
-                   GridItem(.flexible(minimum: 160, maximum: 200), spacing: 10)]
+                           GridItem(.flexible(minimum: 160, maximum: 200), spacing: 10)]
 
     var body: some View {
         NavigationStack(path: $recordRouter.route) {
@@ -39,33 +39,10 @@ struct RecordView: View {
                 ScrollView {
                     LazyVGrid(columns: columns, spacing: 10) {
                         ForEach(placeRecords, id: \.self) { record in
-                            ZStack(alignment: .bottomLeading) {
-                                if let imageData = record.imageData?.first,
-                                    let recordImage = UIImage(data: imageData) {
-                                    Image(uiImage: recordImage)
-                                        .resizable()
-                                        .cornerRadius(10)
-                                        .frame(height: 210)
-                                } else {
-                                    ZStack {
-                                        RoundedRectangle(cornerRadius: 10)
-                                            .frame(height: 210)
-                                            .foregroundColor(.gray)
-
-                                        Image(.siggiIcon)
-                                            .resizable()
-                                            .frame(width: 130, height: 130)
-                                    }
+                            RecordGridItemView(record: record)
+                                .onTapGesture {
+                                    recordRouter.pushView(screen: RecordScreen.recordDetail(placeRecord: record))
                                 }
-
-                                Text(record.name)
-                                    .font(.system(size: 15, weight: .bold))
-                                    .foregroundStyle(.white)
-                                    .padding(10)
-                            }
-                            .onTapGesture {
-                                recordRouter.pushView(screen: RecordScreen.recordDetail(placeRecord: record))
-                            }
                         }
                     }
                     .padding(.horizontal, 10)
@@ -85,4 +62,29 @@ struct RecordView: View {
 
 #Preview {
     RecordView(recordRouter: Router())
+}
+
+struct RecordGridItemView: View {
+    let record: PlaceRecord
+
+    private var imageCacheKey: String {
+        record.id.uuidString
+    }
+
+    var body: some View {
+        ZStack(alignment: .bottomLeading) {
+            AsyncCachedImageView(
+                imageData: record.imageData?.first,
+                cacheKey: imageCacheKey,
+                cornerRadius: 10,
+                defaultImage: (type: .asset("siggiIcon"), width: 130, height: 130)
+            )
+            .frame(height: 210)
+
+            Text(record.name)
+                .font(.system(size: 15, weight: .bold))
+                .foregroundStyle(.white)
+                .padding(10)
+        }
+    }
 }

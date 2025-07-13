@@ -11,9 +11,9 @@ import Common
 
 struct DIContainerModifier: ViewModifier {
     @State private var appRootManager = AppRootManager()
-    @Bindable var searchRouter = Router()
-    @Bindable var recordRouter = Router()
-    
+    @State var searchRouter = Router()
+    @State var recordRouter = Router()
+
     public func body(content: Content) -> some View {
         content
             .environment(appRootManager)
