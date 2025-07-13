@@ -13,6 +13,7 @@ struct PlaceRecordsView: View {
     @Query(sort: \PlaceRecord.date, order: .reverse) var placeRecords: [PlaceRecord]
     @Binding var placeNames: [String]?
     @Environment(\.modelContext) private var modelContext
+    @Environment(\.dismiss) var dismiss
     @State private var isDelete: Bool = false
     @State private var recordToDelete: PlaceRecord?
     private let maximumRating: Int = 5
@@ -22,6 +23,11 @@ struct PlaceRecordsView: View {
         formatter.locale = Locale(identifier: "ko_KR")
         return formatter
     }()
+
+    private var totalDisplayedRecordsCount: Int {
+        guard let namesToFilter = placeNames else { return 0 }
+        return placeRecords.filter { namesToFilter.contains($0.name) }.count
+    }
 
     var body: some View {
         ZStack(alignment: .top) {
@@ -103,6 +109,10 @@ struct PlaceRecordsView: View {
                         try modelContext.save()
                         isDelete = false
                         recordToDelete = nil
+
+                        if totalDisplayedRecordsCount == 0 {
+                            dismiss()
+                        }
                     } catch {
                         print("Failed to delete: \(error)")
                     }
