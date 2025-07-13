@@ -13,7 +13,7 @@ import SwiftUI
 
 struct SearchView: View {
     @Namespace var mapScope
-    @State private var locationManager = LocationManager.shared
+    @State private var locationManager = LocationManager()
     @State private var clusterManager = ClusterManager()
     @State private var position: MapCameraPosition = .userLocation(fallback: .automatic)
     @State private var placeNames: [String]?
@@ -44,10 +44,15 @@ struct SearchView: View {
                     }
                 }
                 .onAppear {
+                    locationManager.requestLocationAuthorization()
+
                     let annotations = placeRecords.map { record in
                         SiggiAnnotation(coordinate: CLLocationCoordinate2D(latitude: record.latitude, longitude: record.longitude), title: record.name, titles: [])
                     }
                     clusterManager.addAnnotations(annotations: annotations)
+                }
+                .onDisappear {
+                    locationManager.stopUpdatingLocation()
                 }
                 .onReadSize {
                     mapViewSize = $0
