@@ -13,14 +13,16 @@ import SwiftUI
 
 struct SearchView: View {
     @Namespace var mapScope
+    @Query(sort: \PlaceRecord.date, order: .reverse) var placeRecords: [PlaceRecord]
+    @Bindable var searchRouter: Router
     @State private var locationManager = LocationManager()
     @State private var clusterManager = ClusterManager()
     @State private var position: MapCameraPosition = .userLocation(fallback: .automatic)
     @State private var placeNames: [String]?
     @State private var isPresented: Bool = false
-    @Bindable var searchRouter: Router
-    @Query(sort: \PlaceRecord.date, order: .reverse) var placeRecords: [PlaceRecord]
     @State private var mapViewSize: CGSize = .zero
+    @State private var currentVisibleMapRect: MKMapRect = .world
+    @State private var currentZoomScale: Double = 1.0
 
     var body: some View {
         NavigationStack(path: $searchRouter.route) {
@@ -45,11 +47,7 @@ struct SearchView: View {
                 }
                 .onAppear {
                     locationManager.requestLocationAuthorization()
-
-                    let annotations = placeRecords.map { record in
-                        SiggiAnnotation(coordinate: CLLocationCoordinate2D(latitude: record.latitude, longitude: record.longitude), title: record.name, titles: [])
-                    }
-                    clusterManager.addAnnotations(annotations: annotations)
+                    updateClusterAnnotations()
                 }
                 .onDisappear {
                     locationManager.stopUpdatingLocation()
@@ -65,14 +63,18 @@ struct SearchView: View {
                     MapCompass()
                         .mapControlVisibility(.hidden)
                 }
+                .onChange(of: placeRecords) {
+                    updateClusterAnnotations()
+                    clusterManager.clusterAnnotations(visibleMapRect: currentVisibleMapRect, zoomScale: currentZoomScale)
+                }
                 .onChange(of: locationManager.region) { oldValue, newValue in
                     position = .region(newValue)
                 }
                 .onMapCameraChange { context in
-                    let visibleMapRect = context.rect
-                    let visibleMapRectWidth = visibleMapRect.size.width
-                    let zoomScale = mapViewSize.width > 0 ? Double(mapViewSize.width / visibleMapRectWidth) : 1.0
-                    clusterManager.clusterAnnotations(visibleMapRect: visibleMapRect, zoomScale: zoomScale)
+                    currentVisibleMapRect = context.rect
+                    let visibleMapRectWidth = currentVisibleMapRect.size.width
+                    currentZoomScale = mapViewSize.width > 0 ? Double(mapViewSize.width / visibleMapRectWidth) : 1.0
+                    clusterManager.clusterAnnotations(visibleMapRect: currentVisibleMapRect, zoomScale: currentZoomScale)
                 }
 
                 VStack(alignment: .trailing) {
@@ -102,6 +104,13 @@ struct SearchView: View {
                 }
             }
         }
+    }
+
+    private func updateClusterAnnotations() {
+        let annotations = placeRecords.map { record in
+            SiggiAnnotation(coordinate: CLLocationCoordinate2D(latitude: record.latitude, longitude: record.longitude), title: record.name, titles: [])
+        }
+        clusterManager.addAnnotations(annotations: annotations)
     }
 }
 
