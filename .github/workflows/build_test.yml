@@ -21,6 +21,8 @@ jobs:
           echo "$HOME/.local/share/mise/shims" >> $GITHUB_PATH
           
       - name: Install Tuist
+        env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
             mise install tuist
             mise use -g tuist@latest
