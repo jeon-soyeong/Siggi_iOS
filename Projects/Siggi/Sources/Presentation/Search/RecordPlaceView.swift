@@ -162,8 +162,8 @@ struct PhotoView: View {
                             selectedImages = []
                             let targetSize = CGSize(width: 500, height: 500)
                             for selectedItem in selectedItems {
-                                if let data = try? await selectedItem.loadTransferable(type: Data.self) {
-                                    let downsampledImage = downsampleImage(at: data, to: targetSize, scale: 1)
+                                if let data = try? await selectedItem.loadTransferable(type: Data.self),
+                                   let downsampledImage = UIImage.downsample(from: data, to: targetSize, scale: 1) {
                                     selectedImages.append(downsampledImage)
                                 }
                             }
@@ -199,26 +199,5 @@ struct PhotoView: View {
                 }
             }
         }
-    }
-
-    func downsampleImage(at imageData: Data, to pointSize: CGSize, scale: CGFloat) -> UIImage {
-        var downsampleImage = UIImage()
-        let imageSourceOptions = [kCGImageSourceShouldCache: false] as CFDictionary
-
-        if let imageSource = CGImageSourceCreateWithData(imageData as CFData, imageSourceOptions) {
-            let maxDimensionInPixels = max(pointSize.width, pointSize.height) * scale
-            let downsampleOptions = [
-                kCGImageSourceCreateThumbnailFromImageAlways: true,
-                kCGImageSourceShouldCacheImmediately: true,
-                kCGImageSourceCreateThumbnailWithTransform: true,
-                kCGImageSourceThumbnailMaxPixelSize: maxDimensionInPixels
-            ] as CFDictionary
-
-            if let thumbnailImage = CGImageSourceCreateThumbnailAtIndex(imageSource, 0, downsampleOptions) {
-                downsampleImage = UIImage(cgImage: thumbnailImage)
-            }
-        }
-
-        return downsampleImage
     }
 }
