@@ -10,11 +10,11 @@ import MapKit
 
 @Observable public final class ClusterManager {
     private let quadTree = QuadTree(boundingBox: BoundingBox.init(mapRect: MKMapRect.world))
-    public var clusterAnnotations: [SiggiAnnotation] = []
+    public var clusterAnnotations: [ClusterAnnotation] = []
 
     public init() { }
 
-    public func addAnnotations(annotations: [SiggiAnnotation]) {
+    public func addAnnotations(annotations: [ClusterAnnotation]) {
         add(annotations: annotations)
     }
 
@@ -22,7 +22,7 @@ import MapKit
         cluster(visibleMapRect: visibleMapRect, zoomScale: zoomScale)
     }
 
-    private func add(annotations: [SiggiAnnotation]) {
+    private func add(annotations: [ClusterAnnotation]) {
         quadTree.reset()
 
         for annotation in annotations {
@@ -73,7 +73,7 @@ import MapKit
 
                             DispatchQueue.main.async {
                                 self.clusterAnnotations.append(
-                                    SiggiAnnotation(coordinate: averageCoordinate,
+                                    ClusterAnnotation(coordinate: averageCoordinate,
                                                      title: annotationTitle,
                                                      titles: annotationTitles)
                                 )
@@ -82,7 +82,7 @@ import MapKit
                             if let annotation = annotations.first, let title = annotation.title {
                                 DispatchQueue.main.async {
                                     self.clusterAnnotations.append(
-                                        SiggiAnnotation(coordinate: annotation.coordinate,
+                                        ClusterAnnotation(coordinate: annotation.coordinate,
                                                          title: "1",
                                                          titles: [title])
                                     )

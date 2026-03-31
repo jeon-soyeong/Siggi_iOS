@@ -11,7 +11,7 @@ import MapKit
 final class QuadTree {
     static let capacity = 8
     var boundingBox: BoundingBox
-    private var annotations = [SiggiAnnotation]()
+    private var annotations = [ClusterAnnotation]()
     private var isDivided = false
 
     private var northWest: QuadTree?
@@ -43,7 +43,7 @@ final class QuadTree {
         southEast = nil
     }
 
-    func insert(annotation: SiggiAnnotation) {
+    func insert(annotation: ClusterAnnotation) {
         guard self.boundingBox.contains(coordinate: annotation.coordinate) else {
             return
         }
@@ -61,12 +61,12 @@ final class QuadTree {
         }
     }
 
-    func findAnnotations(searchInBoundingBox: BoundingBox) async throws -> [SiggiAnnotation] {
+    func findAnnotations(searchInBoundingBox: BoundingBox) async throws -> [ClusterAnnotation] {
         guard searchInBoundingBox.intersects(boundingBox: boundingBox) else {
             return []
         }
 
-        var totalAnnotations: [SiggiAnnotation] = []
+        var totalAnnotations: [ClusterAnnotation] = []
         for annotation in annotations {
             if searchInBoundingBox.contains(coordinate: annotation.coordinate) {
                 totalAnnotations.append(annotation)

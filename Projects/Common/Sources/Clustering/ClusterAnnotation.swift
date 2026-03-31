@@ -8,7 +8,7 @@
 import Foundation
 import MapKit
 
-public final class SiggiAnnotation: NSObject, MKAnnotation, Identifiable {
+public final class ClusterAnnotation: NSObject, MKAnnotation, Identifiable {
     public var coordinate: CLLocationCoordinate2D
     public var title: String?
     public var titles: [String]?

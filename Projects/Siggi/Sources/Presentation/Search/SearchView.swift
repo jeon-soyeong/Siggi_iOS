@@ -108,7 +108,7 @@ struct SearchView: View {
 
     private func updateClusterAnnotations() {
         let annotations = placeRecords.map { record in
-            SiggiAnnotation(coordinate: CLLocationCoordinate2D(latitude: record.latitude, longitude: record.longitude), title: record.name, titles: [])
+            ClusterAnnotation(coordinate: CLLocationCoordinate2D(latitude: record.latitude, longitude: record.longitude), title: record.name, titles: [])
         }
         clusterManager.addAnnotations(annotations: annotations)
     }
