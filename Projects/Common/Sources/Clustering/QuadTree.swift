@@ -61,7 +61,7 @@ final class QuadTree {
         }
     }
 
-    func findAnnotations(searchInBoundingBox: BoundingBox) async throws -> [ClusterAnnotation] {
+    func findAnnotations(searchInBoundingBox: BoundingBox) -> [ClusterAnnotation] {
         guard searchInBoundingBox.intersects(boundingBox: boundingBox) else {
             return []
         }
@@ -74,18 +74,10 @@ final class QuadTree {
         }
 
         if isDivided {
-            async let northEastResults = northEast?.findAnnotations(searchInBoundingBox: searchInBoundingBox) ?? []
-            async let northWestResults = northWest?.findAnnotations(searchInBoundingBox: searchInBoundingBox) ?? []
-            async let southEastResults = southEast?.findAnnotations(searchInBoundingBox: searchInBoundingBox) ?? []
-            async let southWestResults = southWest?.findAnnotations(searchInBoundingBox: searchInBoundingBox) ?? []
-            do {
-                totalAnnotations.append(contentsOf: try await northEastResults)
-                totalAnnotations.append(contentsOf: try await northWestResults)
-                totalAnnotations.append(contentsOf: try await southEastResults)
-                totalAnnotations.append(contentsOf: try await southWestResults)
-            } catch {
-                throw error
-            }
+            totalAnnotations.append(contentsOf: northEast?.findAnnotations(searchInBoundingBox: searchInBoundingBox) ?? [])
+            totalAnnotations.append(contentsOf: northWest?.findAnnotations(searchInBoundingBox: searchInBoundingBox) ?? [])
+            totalAnnotations.append(contentsOf: southEast?.findAnnotations(searchInBoundingBox: searchInBoundingBox) ?? [])
+            totalAnnotations.append(contentsOf: southWest?.findAnnotations(searchInBoundingBox: searchInBoundingBox) ?? [])
         }
 
         return totalAnnotations
