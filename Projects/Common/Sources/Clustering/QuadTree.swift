@@ -43,22 +43,27 @@ final class QuadTree {
         southEast = nil
     }
 
-    func insert(annotation: ClusterAnnotation) {
+    @discardableResult
+    func insert(annotation: ClusterAnnotation) -> Bool {
         guard self.boundingBox.contains(coordinate: annotation.coordinate) else {
-            return
+            return false
         }
 
         if annotations.count < QuadTree.capacity {
             annotations.append(annotation)
-        } else {
-            if northWest == nil {
-                self.subdivide()
-            }
-            northWest?.insert(annotation: annotation)
-            northEast?.insert(annotation: annotation)
-            southWest?.insert(annotation: annotation)
-            southEast?.insert(annotation: annotation)
+            return true
         }
+
+        if northWest == nil {
+            self.subdivide()
+        }
+
+        if northWest?.insert(annotation: annotation) == true { return true }
+        if northEast?.insert(annotation: annotation) == true { return true }
+        if southWest?.insert(annotation: annotation) == true { return true }
+        if southEast?.insert(annotation: annotation) == true { return true }
+
+        return false
     }
 
     func findAnnotations(searchInBoundingBox: BoundingBox) -> [ClusterAnnotation] {
