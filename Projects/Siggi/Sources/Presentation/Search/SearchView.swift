@@ -65,16 +65,15 @@ struct SearchView: View {
                 }
                 .onChange(of: placeRecords) {
                     updateClusterAnnotations()
-                    clusterManager.clusterAnnotations(visibleMapRect: currentVisibleMapRect, zoomScale: currentZoomScale)
-                }
-                .onChange(of: locationManager.region) { oldValue, newValue in
-                    position = .region(newValue)
+                    clusterManager.clusterAnnotations(visibleMapRect: currentVisibleMapRect,
+                                                      zoomScale: currentZoomScale)
                 }
                 .onMapCameraChange { context in
                     currentVisibleMapRect = context.rect
                     let visibleMapRectWidth = currentVisibleMapRect.size.width
                     currentZoomScale = mapViewSize.width > 0 ? Double(mapViewSize.width / visibleMapRectWidth) : 1.0
-                    clusterManager.clusterAnnotations(visibleMapRect: currentVisibleMapRect, zoomScale: currentZoomScale)
+                    clusterManager.clusterAnnotations(visibleMapRect: currentVisibleMapRect,
+                                                      zoomScale: currentZoomScale)
                 }
 
                 VStack(alignment: .trailing) {
@@ -108,7 +107,10 @@ struct SearchView: View {
 
     private func updateClusterAnnotations() {
         let annotations = placeRecords.map { record in
-            ClusterAnnotation(coordinate: CLLocationCoordinate2D(latitude: record.latitude, longitude: record.longitude), title: record.name, titles: [])
+            ClusterAnnotation(coordinate: CLLocationCoordinate2D(latitude: record.latitude,
+                                                                 longitude: record.longitude),
+                              title: record.name,
+                              titles: [])
         }
         clusterManager.addAnnotations(annotations: annotations)
     }

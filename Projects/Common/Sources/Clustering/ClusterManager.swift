@@ -31,72 +31,59 @@ import MapKit
     }
 
     private func cluster(visibleMapRect: MKMapRect, zoomScale: Double) {
-        guard !zoomScale.isInfinite else {
-            return
-        }
+        guard !zoomScale.isInfinite else { return }
 
-        clusterAnnotations = []
         let minX = visibleMapRect.minX
         let maxX = visibleMapRect.minX + visibleMapRect.width
         let minY = visibleMapRect.minY
         let maxY = visibleMapRect.minY + visibleMapRect.height
         let cellSizePoints = Double(visibleMapRect.size.width / Double(calculateDivisionCount(for: MKZoomScale(zoomScale))))
 
-        var yCoordinate = minY
+        Task.detached {
+            var newClusters: [ClusterAnnotation] = []
+            var yCoordinate = minY
 
-        while yCoordinate < maxY {
-            var xCoordinate = minX
+            while yCoordinate < maxY {
+                var xCoordinate = minX
 
-            while xCoordinate < maxX {
-                let area = BoundingBox.init(mapRect: MKMapRect(x: xCoordinate, y: yCoordinate, width: cellSizePoints, height: cellSizePoints))
+                while xCoordinate < maxX {
+                    let area = BoundingBox(mapRect: MKMapRect(x: xCoordinate, y: yCoordinate, width: cellSizePoints, height: cellSizePoints))
 
-                Task {
-                    do {
-                        let annotations = try await self.quadTree.findAnnotations(searchInBoundingBox: area)
-                        if annotations.count > 1 {
-                            var totalX = 0.0
-                            var totalY = 0.0
-                            let totalAnnotationsCount = annotations.count
-                            var titlesSet: Set<String> = []
-                            for annotation in annotations {
-                                totalX += annotation.coordinate.latitude
-                                totalY += annotation.coordinate.longitude
-                                if let title = annotation.title {
-                                    titlesSet.insert(title)
-                                }
-                            }
+                    let annotations = self.quadTree.findAnnotations(searchInBoundingBox: area)
 
-                            let averageCoordinate = CLLocationCoordinate2D(latitude: totalX / Double(totalAnnotationsCount),
-                                                                           longitude: totalY / Double(totalAnnotationsCount))
-                            let annotationTitle = "\(totalAnnotationsCount)"
-                            let annotationTitles = Array(titlesSet)
+                    if annotations.count > 1 {
+                        var totalX = 0.0
+                        var totalY = 0.0
+                        var titlesSet: Set<String> = []
 
-                            DispatchQueue.main.async {
-                                self.clusterAnnotations.append(
-                                    ClusterAnnotation(coordinate: averageCoordinate,
-                                                     title: annotationTitle,
-                                                     titles: annotationTitles)
-                                )
-                            }
-                        } else if annotations.count == 1 {
-                            if let annotation = annotations.first, let title = annotation.title {
-                                DispatchQueue.main.async {
-                                    self.clusterAnnotations.append(
-                                        ClusterAnnotation(coordinate: annotation.coordinate,
-                                                         title: "1",
-                                                         titles: [title])
-                                    )
-                                }
-                            }
+                        for annotation in annotations {
+                            totalX += annotation.coordinate.latitude
+                            totalY += annotation.coordinate.longitude
+                            if let title = annotation.title { titlesSet.insert(title) }
+                        }
+
+                        let averageCoordinate = CLLocationCoordinate2D(latitude: totalX / Double(annotations.count),
+                                                                       longitude: totalY / Double(annotations.count))
+
+                        newClusters.append(ClusterAnnotation(coordinate: averageCoordinate,
+                                                             title: "\(annotations.count)",
+                                                             titles: Array(titlesSet)))
+
+                    } else if annotations.count == 1 {
+                        if let annotation = annotations.first, let title = annotation.title {
+                            newClusters.append(ClusterAnnotation(coordinate: annotation.coordinate,
+                                                                 title: "1",
+                                                                 titles: [title]))
                         }
                     }
-                    catch {
-                        print("find annotaions error: \(error.localizedDescription)")
-                    }
+                    xCoordinate += cellSizePoints
                 }
-                xCoordinate += cellSizePoints
+                yCoordinate += cellSizePoints
             }
-            yCoordinate += cellSizePoints
+
+            await MainActor.run {
+                self.clusterAnnotations = newClusters
+            }
         }
     }
 

@@ -43,25 +43,49 @@ final class QuadTree {
         southEast = nil
     }
 
-    func insert(annotation: ClusterAnnotation) {
+    @discardableResult
+    func insert(annotation: ClusterAnnotation) -> Bool {
         guard self.boundingBox.contains(coordinate: annotation.coordinate) else {
-            return
+            return false
         }
 
+        // 이미 분할된 노드(부모 노드)라면, 자식에게 넘김
+        if isDivided {
+            return insertIntoChildren(annotation: annotation)
+        }
+
+        // 아직 자리가 남았다면 부모가 가짐
         if annotations.count < QuadTree.capacity {
             annotations.append(annotation)
-        } else {
-            if northWest == nil {
-                self.subdivide()
-            }
-            northWest?.insert(annotation: annotation)
-            northEast?.insert(annotation: annotation)
-            southWest?.insert(annotation: annotation)
-            southEast?.insert(annotation: annotation)
+            return true
         }
+
+        // [무한 재귀 방어] 가로 또는 세로 길이가 한계치보다 작아지면 분할 중지
+        // (완전히 동일하거나 극도로 가까운 좌표 밀집 시 Stack Overflow 방지)
+        let width = boundingBox.maxLongitude - boundingBox.minLongitude
+        let height = boundingBox.maxLatitude - boundingBox.minLatitude
+
+        if width < 0.00001 || height < 0.00001 {
+            annotations.append(annotation)
+            return true
+        }
+
+        // 기존 데이터를 미리 분리
+        let oldAnnotations = annotations
+        annotations.removeAll()
+
+        subdivide()
+
+        // 분리해둔 기존 데이터들을 자식들에게 재분배
+        for oldAnnotation in oldAnnotations {
+            insertIntoChildren(annotation: oldAnnotation)
+        }
+
+        // 이번에 새로 들어온 데이터도 자식에게 전달
+        return insertIntoChildren(annotation: annotation)
     }
 
-    func findAnnotations(searchInBoundingBox: BoundingBox) async throws -> [ClusterAnnotation] {
+    func findAnnotations(searchInBoundingBox: BoundingBox) -> [ClusterAnnotation] {
         guard searchInBoundingBox.intersects(boundingBox: boundingBox) else {
             return []
         }
@@ -74,18 +98,10 @@ final class QuadTree {
         }
 
         if isDivided {
-            async let northEastResults = northEast?.findAnnotations(searchInBoundingBox: searchInBoundingBox) ?? []
-            async let northWestResults = northWest?.findAnnotations(searchInBoundingBox: searchInBoundingBox) ?? []
-            async let southEastResults = southEast?.findAnnotations(searchInBoundingBox: searchInBoundingBox) ?? []
-            async let southWestResults = southWest?.findAnnotations(searchInBoundingBox: searchInBoundingBox) ?? []
-            do {
-                totalAnnotations.append(contentsOf: try await northEastResults)
-                totalAnnotations.append(contentsOf: try await northWestResults)
-                totalAnnotations.append(contentsOf: try await southEastResults)
-                totalAnnotations.append(contentsOf: try await southWestResults)
-            } catch {
-                throw error
-            }
+            totalAnnotations.append(contentsOf: northEast?.findAnnotations(searchInBoundingBox: searchInBoundingBox) ?? [])
+            totalAnnotations.append(contentsOf: northWest?.findAnnotations(searchInBoundingBox: searchInBoundingBox) ?? [])
+            totalAnnotations.append(contentsOf: southEast?.findAnnotations(searchInBoundingBox: searchInBoundingBox) ?? [])
+            totalAnnotations.append(contentsOf: southWest?.findAnnotations(searchInBoundingBox: searchInBoundingBox) ?? [])
         }
 
         return totalAnnotations
@@ -100,5 +116,15 @@ final class QuadTree {
         northEast = QuadTree(boundingBox: BoundingBox(minLatitude: midLatitude, maxLatitude: boundingBox.maxLatitude, minLongitude: midLongitude, maxLongitude: boundingBox.maxLongitude))
         southWest = QuadTree(boundingBox: BoundingBox(minLatitude: boundingBox.minLatitude, maxLatitude: midLatitude, minLongitude: boundingBox.minLongitude, maxLongitude: midLongitude))
         southEast = QuadTree(boundingBox: BoundingBox(minLatitude: boundingBox.minLatitude, maxLatitude: midLatitude, minLongitude: midLongitude, maxLongitude: boundingBox.maxLongitude))
+    }
+
+    // 자식 노드들에게 순서대로 삽입을 시도하는 헬퍼 메서드
+    @discardableResult
+    private func insertIntoChildren(annotation: ClusterAnnotation) -> Bool {
+        if northWest?.insert(annotation: annotation) == true { return true }
+        if northEast?.insert(annotation: annotation) == true { return true }
+        if southWest?.insert(annotation: annotation) == true { return true }
+        if southEast?.insert(annotation: annotation) == true { return true }
+        return false
     }
 }
